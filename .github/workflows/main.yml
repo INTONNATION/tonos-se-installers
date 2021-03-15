@@ -26,7 +26,7 @@ jobs:
 
     - name: Build TON node 
       run: |
-        apt update && apt install -y cmake pkg-config libssl-dev curl
+        apt update -y && apt install -y cmake pkg-config libssl-dev curl
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh 
         cd ton-node-se && cargo build --release
 
