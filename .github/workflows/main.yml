@@ -27,7 +27,7 @@ jobs:
     - name: Build TON node 
       run: |
         sudo apt update -y && sudo apt install -y cmake pkg-config libssl-dev curl
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh 
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
         cd ton-node-se && cargo build --release
 
     - name: Archive GraphQL npm and TON node bin to common release
