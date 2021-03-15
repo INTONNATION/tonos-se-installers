@@ -21,7 +21,7 @@ jobs:
 
     - name: Extract GraphQL release
       shell: bash
-      run: echo "##[set-output name=release_tar;]$(npm pack ton-q-server | tail -1)"
+      run: echo "##[set-output name=release_tar;]$(npm pack ./ton-q-server | tail -1)"
       id: graphql_release
 
     - name: Extract branch name
