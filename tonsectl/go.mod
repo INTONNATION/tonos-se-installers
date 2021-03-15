@@ -1,4 +1,4 @@
-module github.com/INTONNATION/TONOS_Startup_installers
+module github.com/INTONNATION/tonos-se-installers/tonsectl
 
 require (
 	github.com/99designs/gqlgen v0.12.2

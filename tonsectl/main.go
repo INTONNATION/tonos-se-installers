@@ -1,7 +1,7 @@
 package main
 
 import (
-  "https://github.com/INTONNATION/tonos-se-installers/tonsectl/cmd"
+  "github.com/INTONNATION/tonos-se-installers/tonsectl/cmd"
 )
 
 func main() {
