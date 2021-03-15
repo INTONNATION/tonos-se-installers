@@ -1,0 +1,19 @@
+GO_DIR ?= $(shell pwd)
+GO_PKG ?= $(shell go list -e -f "{{ .ImportPath }}")
+
+GOOS ?= $(shell go env GOOS || echo linux)
+GOARCH ?= $(shell go env GOARCH || echo amd64)
+CGO_ENABLED ?= 0
+
+
+
+init: ## init packages
+	mkdir -p artifacts ;\
+    rm -rf artifacts/*
+
+build: init ## build binary file
+	GOOS=${GOOS} CGO_ENABLED=${CGO_ENABLED} GOARCH=${GOARCH} \
+	go build -ldflags "-X $(GO_PKG)/cmd/version.appVersion=$(TAG)-$$(date -u +%Y%m%d%H%M)" -o "$(GO_DIR)/artifacts/tonsectl_${GOOS}" main.go
+
+
+.DEFAULT_GOAL := help
