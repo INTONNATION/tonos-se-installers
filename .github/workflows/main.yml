@@ -15,14 +15,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Package GraphQL
+    - name: Clone GraphQL
       run: |
         git clone --recursive --branch $Q_SERVER_GITHUB_REV $Q_SERVER_GITHUB_REPO ton-q-server
 
-    - name: Extract GraphQL release
+    - name: Package GraphQL npm 
       shell: bash
       run: echo "##[set-output name=release_tar;]$(npm pack ./ton-q-server | tail -1)"
       id: graphql_release
+
+    - name: Build TON node 
+      run: |
+        apt update && apt install -y cmake pkg-config libssl-dev curl
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh 
+        cd ton-node-se && cargo build --release
+
+    - name: Archive GraphQL npm and TON node bin to common release
+      run: |
+        tar --transform 's/.*\///g' -cvzf tonos-se.tar.gz ton-node-se/target/release/ton_node_startup ${{ steps.graphql_release.outputs.release_tar }}
 
     - name: Extract branch name
       shell: bash
@@ -47,6 +57,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ steps.graphql_release.outputs.release_tar }}
-        asset_name: ${{ steps.extract_branch.outputs.branch }}
+        asset_path: tonos-se.tar.gz
+        asset_name: ${{ steps.extract_branch.outputs.branch }}.tgz
         asset_content_type: application/gzip
