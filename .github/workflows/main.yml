@@ -1,0 +1,52 @@
+name: Build Rust node and tools
+
+on:
+  push:
+    branches:
+      - 'tonos-se-v-*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+    env:
+      Q_SERVER_GITHUB_REPO: https://github.com/tonlabs/ton-q-server
+      Q_SERVER_GITHUB_REV: master
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Package GraphQL
+      run: |
+        git clone --recursive --branch $Q_SERVER_GITHUB_REV $Q_SERVER_GITHUB_REPO ton-q-server
+
+    - name: Extract GraphQL release
+      shell: bash
+      run: echo "##[set-output name=release_tar;]$(npm pack ton-q-server | tail -1)"
+      id: graphql_release
+
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.extract_branch.outputs.branch }}
+        release_name: ${{ steps.extract_branch.outputs.branch }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ steps.graphql_release.outputs.release_tar }}.tar.gz
+        asset_name: ${{ steps.extract_branch.outputs.branch }}.tar.gz
+        asset_content_type: application/gzip
