@@ -6,6 +6,7 @@ import (
     "log"
     "compress/gzip"
     "net/http"
+    "github.com/joho/godotenv"
     //"github.com/gorilla/mux"
     "io"
     "os"
@@ -36,7 +37,8 @@ func tonseInit(w http.ResponseWriter, r *http.Request){
 }
 
 func tonseStart(w http.ResponseWriter, r *http.Request){
-    node()
+//     node()
+    graphql()
     fmt.Println("Endpoint Hit: tonseStart")
 }
 
@@ -142,6 +144,14 @@ func node() {
     cmd := exec.Command("./ton_node_startup", "--config", "cfg")
     cmd.Start()
 }
+
+func graphql() {
+    os.Chdir(tonossePath+"package/")
+    godotenv.Load()
+    cmd := exec.Command("node", "index.js")
+    cmd.Start()
+}
+
 
 func RunApi() {
     tonseapi()
