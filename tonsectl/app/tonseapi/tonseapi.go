@@ -8,7 +8,8 @@ import (
     "net/http"
     "syscall"
     "time"
-    //"github.com/gorilla/mux"
+    "github.com/joho/godotenv"
+    "github.com/gorilla/mux"
     "io"
     "os"
     "os/user"
@@ -26,14 +27,14 @@ var tonossePubKey = "https://raw.githubusercontent.com/tonlabs/tonos-se/master/d
 var pid = 0
 
 func tonseapi() {
-    //myRouter := mux.NewRouter().StrictSlash(true)
-    http.HandleFunc("/tonse/init", tonseInit)
-    http.HandleFunc("/tonse/start", tonseStart)
-    http.HandleFunc("/tonse/stop", tonseStop)
-    http.HandleFunc("/tonse/status", tonseStatus)
-    http.HandleFunc("/tonse/reset", tonseReset)
-    http.HandleFunc("/tonse/upgrade", tonseUpgrade)
-    log.Fatal(http.ListenAndServe(":10000", nil))
+    myRouter := mux.NewRouter().StrictSlash(true)
+    myRouter.HandleFunc("/tonse/init", tonseInit)
+    myRouter.HandleFunc("/tonse/start", tonseStart)
+    myRouter.HandleFunc("/tonse/stop", tonseStop)
+    myRouter.HandleFunc("/tonse/status", tonseStatus)
+    myRouter.HandleFunc("/tonse/reset", tonseReset)
+    myRouter.HandleFunc("/tonse/upgrade", tonseUpgrade)
+    log.Fatal(http.ListenAndServe(":10000", myRouter))
 }
 
 func tonseInit(w http.ResponseWriter, r *http.Request){
@@ -43,6 +44,7 @@ func tonseInit(w http.ResponseWriter, r *http.Request){
 func tonseStart(w http.ResponseWriter, r *http.Request){
     //node()
     arangodStart()
+    graphql()
     fmt.Println("Endpoint Hit: tonseStart")
 }
 
@@ -196,6 +198,13 @@ func arangodStart(){
 	dump.Stdout = os.Stdout
 	dump.Stderr = os.Stderr
 	dump.Run()
+}
+
+func graphql() {
+    os.Chdir(tonossePath+"package/")
+    godotenv.Load()
+    cmd := exec.Command("node", "index.js")
+    cmd.Start()
 }
 
 func RunApi() {
