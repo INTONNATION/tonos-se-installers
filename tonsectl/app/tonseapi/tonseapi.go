@@ -7,7 +7,7 @@ import (
     "compress/gzip"
     "net/http"
     "github.com/joho/godotenv"
-    //"github.com/gorilla/mux"
+    "github.com/gorilla/mux"
     "io"
     "os"
     "archive/tar"
@@ -15,21 +15,21 @@ import (
 
 var tonosseUrl = "https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/"
 var tonosseTar = "tonos-se-v-0.25.0.tgz"
-var tonossePath = "/opt/tonsectl/"
+var tonossePath = "./"
 var tonosseConfigUrl = "https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/cfg"
 var tonosseLogCfg = "https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/log_cfg.yml"
 var tonossePrivKey = "https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/private-key"
 var tonossePubKey = "https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/pub-key"
 
 func tonseapi() {
-    //myRouter := mux.NewRouter().StrictSlash(true)
-    http.HandleFunc("/tonse/init", tonseInit)
-    http.HandleFunc("/tonse/start", tonseStart)
-    http.HandleFunc("/tonse/stop", tonseStop)
-    http.HandleFunc("/tonse/status", tonseStatus)
-    http.HandleFunc("/tonse/reset", tonseReset)
-    http.HandleFunc("/tonse/upgrade", tonseUpgrade)
-    log.Fatal(http.ListenAndServe(":10000", nil))
+    myRouter := mux.NewRouter().StrictSlash(true)
+    myRouter.HandleFunc("/tonse/init", tonseInit)
+    myRouter.HandleFunc("/tonse/start", tonseStart)
+    myRouter.HandleFunc("/tonse/stop", tonseStop)
+    myRouter.HandleFunc("/tonse/status", tonseStatus)
+    myRouter.HandleFunc("/tonse/reset", tonseReset)
+    myRouter.HandleFunc("/tonse/upgrade", tonseUpgrade)
+    log.Fatal(http.ListenAndServe(":10000", myRouter))
 }
 
 func tonseInit(w http.ResponseWriter, r *http.Request){
@@ -151,7 +151,6 @@ func graphql() {
     cmd := exec.Command("node", "index.js")
     cmd.Start()
 }
-
 
 func RunApi() {
     tonseapi()
