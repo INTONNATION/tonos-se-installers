@@ -23,7 +23,7 @@ var tonosseLogCfg = "https://raw.githubusercontent.com/tonlabs/tonos-se/master/d
 var tonossePrivKey = "https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/private-key"
 var tonossePubKey = "https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/pub-key"
 var usr, e = user.Current()
-var tonossePath = usr.HomeDir + "/tonse"
+var tonossePath = usr.HomeDir + "/tonse/"
 
 var pid = 0
 
@@ -43,7 +43,7 @@ func tonseInit(w http.ResponseWriter, r *http.Request){
 }
 
 func tonseStart(w http.ResponseWriter, r *http.Request){
-    //node()
+    node()
     arangodStart()
     graphql()
     fmt.Println("Endpoint Hit: tonseStart")
@@ -123,7 +123,7 @@ func extractTarGz(gzipStream io.Reader) {
             }
             if _, err := io.Copy(outFile, tarReader); err != nil {
                 log.Fatalf("extractTarGz: Copy() failed: %s", err.Error())
-            }
+             }
             outFile.Close()
 
         default:
@@ -138,18 +138,19 @@ func extractTarGz(gzipStream io.Reader) {
 func node() {
     //Commented because of private repo
     //downloadFile(tonossePath+tonosseTar, tonosseUrl+tonosseTar)
-    tarFile, err1 := os.Open(tonossePath + tonosseTar)
-    if err1 != nil {
-        log.Fatalf(err1.Error())
-    }
-    extractTarGz(tarFile)
-    downloadFile(tonossePath+"cfg", tonosseConfigUrl)
-    downloadFile(tonossePath+"log_cfg.yml", tonosseLogCfg)
-    downloadFile(tonossePath+"private-key", tonossePrivKey)
-    downloadFile(tonossePath+"pub-key", tonossePubKey)
-    os.Chdir(tonossePath)
-    os.Chmod("ton_node_startup", 0700)
+    // tarFile, err1 := os.Open(tonossePath + tonosseTar)
+    // if err1 != nil {
+    //     log.Fatalf(err1.Error())
+    // }
+    // extractTarGz(tarFile)
+    // downloadFile(tonossePath+"cfg", tonosseConfigUrl)
+    // downloadFile(tonossePath+"log_cfg.yml", tonosseLogCfg)
+    // downloadFile(tonossePath+"private-key", tonossePrivKey)
+    // downloadFile(tonossePath+"pub-key", tonossePubKey)
+    os.Chdir(tonossePath + "/node")
     cmd := exec.Command("./ton_node_startup", "--config", "cfg")
+    cmd.Stdout = os.Stdout
+    cmd.Stderr = os.Stderr
     cmd.Start()
 }
 
