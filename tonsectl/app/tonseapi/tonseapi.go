@@ -6,20 +6,25 @@ import (
     "log"
     "compress/gzip"
     "net/http"
+    "syscall"
+    "time"
     "github.com/joho/godotenv"
     "github.com/gorilla/mux"
     "io"
     "os"
+    "os/user"
     "archive/tar"
 )
 
 var tonosseUrl = "https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/"
 var tonosseTar = "tonos-se-v-0.25.0.tgz"
-var tonossePath = "./"
+var tonossePath = "/tonse"
 var tonosseConfigUrl = "https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/cfg"
 var tonosseLogCfg = "https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/log_cfg.yml"
 var tonossePrivKey = "https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/private-key"
 var tonossePubKey = "https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/pub-key"
+
+var pid = 0
 
 func tonseapi() {
     myRouter := mux.NewRouter().StrictSlash(true)
@@ -37,12 +42,14 @@ func tonseInit(w http.ResponseWriter, r *http.Request){
 }
 
 func tonseStart(w http.ResponseWriter, r *http.Request){
-//     node()
+    //node()
+    arangodStart()
     graphql()
     fmt.Println("Endpoint Hit: tonseStart")
 }
 
 func tonseStop(w http.ResponseWriter, r *http.Request){
+    arangodStop()
     fmt.Println("Endpoint Hit: tonseStop")
 }
 
@@ -130,19 +137,67 @@ func extractTarGz(gzipStream io.Reader) {
 func node() {
     //Commented because of private repo
     //downloadFile(tonossePath+tonosseTar, tonosseUrl+tonosseTar)
-    tarFile, err1 := os.Open(tonossePath + tonosseTar)
+    usr, e := user.Current()
+    if e != nil {
+        log.Fatal( e )
+    }
+    fmt.Println( usr.HomeDir )
+    tarFile, err1 := os.Open(usr.HomeDir + tonossePath + tonosseTar)
     if err1 != nil {
         log.Fatalf(err1.Error())
     }
     extractTarGz(tarFile)
-    downloadFile(tonossePath+"cfg", tonosseConfigUrl)
-    downloadFile(tonossePath+"log_cfg.yml", tonosseLogCfg)
-    downloadFile(tonossePath+"private-key", tonossePrivKey)
-    downloadFile(tonossePath+"pub-key", tonossePubKey)
-    os.Chdir(tonossePath)
+    downloadFile(usr.HomeDir + tonossePath+"cfg", tonosseConfigUrl)
+    downloadFile(usr.HomeDir + tonossePath+"log_cfg.yml", tonosseLogCfg)
+    downloadFile(usr.HomeDir + tonossePath+"private-key", tonossePrivKey)
+    downloadFile(usr.HomeDir + tonossePath+"pub-key", tonossePubKey)
+    os.Chdir(usr.HomeDir + tonossePath)
     os.Chmod("ton_node_startup", 0700)
     cmd := exec.Command("./ton_node_startup", "--config", "cfg")
     cmd.Start()
+}
+
+func arangodStop(){
+   err := syscall.Kill(pid, 9)
+   if err == nil {
+      fmt.Println("Signal SIGTERM sent to PID", pid)
+   }
+}
+
+func arangodStart(){
+        os.Chdir(tonossePath+"/arangodb/usr/bin")
+        usr, e := user.Current()
+        if e != nil {
+            log.Fatal( e )
+        }
+        fmt.Println( usr.HomeDir )
+	upgrade := exec.Command("arangod", "--config", usr.HomeDir + tonossePath + "/arangodb/etc/config", "--server.endpoint", "tcp://127.0.0.1:8529", "--server.authentication=false", "--log.foreground-tty", "true", "--database.auto-upgrade", "true")
+        upgrade.Stdout = os.Stdout
+	upgrade.Stderr = os.Stderr
+	err := upgrade.Run()
+	if err != nil {
+            log.Fatalf("cmd.Run() failed with %s\n", err)
+	}
+	cmd := exec.Command("arangod", "--config", usr.HomeDir + tonossePath + "/arangodb/etc/config", "--server.endpoint", "tcp://127.0.0.1:8529", "--server.authentication=false", "--log.foreground-tty", "true")
+        cmd.Stdout = os.Stdout
+        cmd.Stderr = os.Stderr
+	cmd.Start()
+	log.Printf("Just ran subprocess %d, exiting\n", cmd.Process.Pid)
+	pid = cmd.Process.Pid
+	for {
+	    status := exec.Command("arangosh", "--server.endpoint=127.0.0.1", "--server.authentication=false", "--javascript.execute-string", "'db._version()'")
+	    status.Stdout = os.Stdout
+	    status.Stderr = os.Stderr
+	    err := status.Run()
+	    time.Sleep(1 * time.Second)
+	    if err == nil {
+	        break
+	    }
+	}
+	dump := exec.Command("arangosh", "--server.authentication", "false", "--server.endpoint=tcp://127.0.0.1:8529", "--javascript.execute", usr.HomeDir + tonossePath + "/arangodb/initdb.d/upgrade-arango-db.js")
+	dump.Stdout = os.Stdout
+	dump.Stderr = os.Stderr
+	dump.Run()
 }
 
 func graphql() {
