@@ -19,7 +19,7 @@ var startCmd = &cobra.Command{
 }
 
 func start() {
-        resp, err := http.Head("http://localhost:10000/tonsectl/start")
+        resp, err := http.Head("http://localhost:10000/tonse/start")
         if err != nil {
     	// handle err
         }

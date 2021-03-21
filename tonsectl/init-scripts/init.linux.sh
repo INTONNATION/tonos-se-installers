@@ -59,8 +59,10 @@ qserver=`ls $tonossePath | grep ton-q-server`
 echo $qserver
 rm -rf $tonossePath/graphql/$qserver
 mv $tonossePath/$qserver $tonossePath/graphql/
-PATH=$PATH:$tonossePath/nodejs/bin/
+PATH=$PATH:$tonossePath/graphql/nodejs/bin/
 sudo mkdir /usr/lib/node_modules -p
 sudo chown -R $USER /usr/lib/node_modules
-./nodejs/bin/npm install $qserver --production -g
+./nodejs/bin/npm install $qserver --production
+tar xf $tonossePath/graphql/$qserver
 rm -rf $tonossePath/graphql/$qserver 
+

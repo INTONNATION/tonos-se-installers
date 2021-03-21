@@ -192,7 +192,7 @@ func arangodStart(){
 }
 
 func graphql() {
-    os.Chdir("/usr/lib/node_modules/ton-q-server/")
+    os.Chdir(tonossePath+"/graphql/package")
     godotenv.Load()
     cmd := exec.Command(tonossePath+"/graphql/nodejs/bin/node", "index.js")
     cmd.Stdout = os.Stdout
