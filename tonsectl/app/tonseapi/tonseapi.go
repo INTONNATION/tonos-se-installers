@@ -14,6 +14,9 @@ import (
     "os"
     "os/user"
     "archive/tar"
+    "runtime"
+    "io/ioutil"
+    "strconv"
 )
 
 var tonosseUrl = "https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/"
@@ -49,7 +52,8 @@ func tonseStart(w http.ResponseWriter, r *http.Request){
 }
 
 func tonseStop(w http.ResponseWriter, r *http.Request){
-    arangodStop()
+    fmt.Println("Endpoint Hit:")
+    stopall()
     fmt.Println("Endpoint Hit: tonseStop")
 }
 
@@ -195,9 +199,53 @@ func graphql() {
     os.Chdir(tonossePath+"/graphql/package")
     godotenv.Load()
     cmd := exec.Command(tonossePath+"/graphql/nodejs/bin/node", "index.js")
+    if runtime.GOOS == "darwin" {
+        cmd = exec.Command("node", "index.js")
+    }
     cmd.Stdout = os.Stdout
     cmd.Stderr = os.Stderr
     cmd.Start()
+}
+
+
+var PIDFile = "./.daemonize.pid"
+func stopall() {
+    if _, err := os.Stat(PIDFile); err == nil {
+         data, err := ioutil.ReadFile(PIDFile)
+         if err != nil {
+                 fmt.Println("Not running")
+                 os.Exit(1)
+
+         ProcessID, err := strconv.Atoi(string(data))
+
+         if err != nil {
+                 fmt.Println("Unable to read and parse process id found in ", PIDFile)
+                 os.Exit(1)
+         }
+
+         process, err := os.FindProcess(ProcessID)
+
+         if err != nil {
+                 fmt.Printf("Unable to find process ID [%v] with error %v \n", ProcessID, err)
+                 os.Exit(1)
+         }
+         // remove PID file
+         os.Remove(PIDFile)
+
+         fmt.Printf("Killing process ID [%v] now.\n", ProcessID)
+         // kill process and exit immediately
+         err = process.Kill()
+
+         if err != nil {
+                 fmt.Printf("Unable to kill process ID [%v] with error %v \n", ProcessID, err)
+                 os.Exit(1)
+         } else {
+                 fmt.Printf("Killed process ID [%v]\n", ProcessID)
+                 os.Exit(0)
+         }
+}
+
+}
 }
 
 func RunApi() {

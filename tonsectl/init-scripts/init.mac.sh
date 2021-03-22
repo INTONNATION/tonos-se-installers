@@ -10,7 +10,7 @@ tonossePath="$HOME/tonse"
 # Download tonosse and extract TON node and Graph binaries
 
 cd $tonossePath
-curl -O https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-$tonosse_version/tonos-se-v-$tonosse_version.tgz
+curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-$tonosse_version/tonos-se-v-$tonosse_version.tgz
 mv tonos-se-v-$tonosse_version.tgz tonos-se-v-$tonosse_version.tar
 tar xf tonos-se-v-$tonosse_version.tar
 rm tonos-se-v-$tonosse_version.tar
@@ -26,8 +26,7 @@ mkdir -p $tonossePath/arangodb/etc
 mkdir -p $tonossePath/arangodb/var/lib/arangodb3
 mkdir -p $tonossePath/arangodb/initdb.d/
 
-curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/docker/arango/config
-cp arangodb/config $tonossePath/arangodb/etc/config
+curl https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/arangodb/config -o $tonossePath/arangodb/etc/config
 curl https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/arango/initdb.d/upgrade-arango-db.js -o $tonossePath/arangodb/initdb.d/upgrade-arango-db.js
 
 # TON node
@@ -51,4 +50,7 @@ cd $tonossePath/graphql
 curl "https://nodejs.org/dist//latest-v12.x/node-${nodejs_version:-$(wget -qO- https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
 qserver=`ls $tonossePath | grep ton-q-server`
 mv $tonossePath/$qserver $tonossePath/graphql/
-npm install $qserver --production -g
+npm config set registry="http://registry.npmjs.org"
+npm install $qserver --production
+tar xf $tonossePath/graphql/$qserver
+rm -rf $tonossePath/graphql/$qserver
