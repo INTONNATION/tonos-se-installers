@@ -48,6 +48,7 @@ func tonseStart(w http.ResponseWriter, r *http.Request){
     arangodStart()
     node()
     graphql()
+    nginx()
     fmt.Println("Endpoint Hit: tonseStart")
 }
 
@@ -207,6 +208,12 @@ func graphql() {
     cmd.Start()
 }
 
+func nginx() {
+    cmd := exec.Command("nginx -g 'daemon on; master_process on;'")
+    cmd.Stdout = os.Stdout
+    cmd.Stderr = os.Stderr
+    cmd.Start()
+}
 
 var PIDFile = "./.daemonize.pid"
 func stopall() {
