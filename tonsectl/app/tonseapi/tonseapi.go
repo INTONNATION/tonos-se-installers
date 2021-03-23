@@ -48,6 +48,7 @@ func tonseStart(w http.ResponseWriter, r *http.Request){
     arangodStart()
     node()
     graphql()
+    nginx()
     fmt.Println("Endpoint Hit: tonseStart")
 }
 
