@@ -36,10 +36,10 @@ curl https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/arango/ini
 mkdir -p $tonossePath/node
 cd $tonossePath/node
 
-curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/cfg
-curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/log_cfg.yml
-curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/private-key
-curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/pub-key
+curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/docker/ton-node/cfg
+curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/docker/ton-node/log_cfg.yml
+curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/docker/ton-node/private-key
+curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/docker/ton-node/pub-key
 
 rm $tonossePath/node/ton_node_startup -f
 mv $tonossePath/ton_node_startup $tonossePath/node/
@@ -66,3 +66,8 @@ sudo chown -R $USER /usr/lib/node_modules
 tar xf $tonossePath/graphql/$qserver
 rm -rf $tonossePath/graphql/$qserver 
 
+# Nginx
+
+# Need to add more Linux distributives
+apt -y install nginx
+curl -o /etc/nginx/nginx.conf https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf
