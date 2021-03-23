@@ -54,3 +54,10 @@ npm config set registry="http://registry.npmjs.org"
 npm install $qserver --production
 tar xf $tonossePath/graphql/$qserver
 rm -rf $tonossePath/graphql/$qserver
+
+
+# Nginx
+
+# Need to add more Linux distributives
+brew install nginx
+curl -o /etc/nginx/nginx.conf https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf

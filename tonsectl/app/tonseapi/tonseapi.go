@@ -1,22 +1,22 @@
 package tonseapi
 
 import (
-    "fmt"
-    "os/exec"
-    "log"
+    "archive/tar"
     "compress/gzip"
+    "fmt"
+    "github.com/gorilla/mux"
+    "github.com/joho/godotenv"
+    "io"
+    "io/ioutil"
+    "log"
     "net/http"
+    "os"
+    "os/exec"
+    "os/user"
+    "runtime"
+    "strconv"
     "syscall"
     "time"
-    "github.com/joho/godotenv"
-    "github.com/gorilla/mux"
-    "io"
-    "os"
-    "os/user"
-    "archive/tar"
-    "runtime"
-    "io/ioutil"
-    "strconv"
 )
 
 var tonosseUrl = "https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/"
@@ -29,6 +29,8 @@ var usr, e = user.Current()
 var tonossePath = usr.HomeDir + "/tonse/"
 
 var pid = 0
+
+
 
 func tonseapi() {
     myRouter := mux.NewRouter().StrictSlash(true)
@@ -53,9 +55,9 @@ func tonseStart(w http.ResponseWriter, r *http.Request){
 }
 
 func tonseStop(w http.ResponseWriter, r *http.Request){
-    fmt.Println("Endpoint Hit:")
-    stopall()
-    fmt.Println("Endpoint Hit: tonseStop")
+    log.Println("Endpoint Hit:1")
+    stop()
+    log.Println("Endpoint Hit: tonseStop")
 }
 
 func tonseStatus(w http.ResponseWriter, r *http.Request){
@@ -196,6 +198,7 @@ func arangodStart(){
 	dump.Run()
 }
 
+
 func graphql() {
     os.Chdir(tonossePath+"/graphql/package")
     godotenv.Load()
@@ -203,8 +206,13 @@ func graphql() {
     if runtime.GOOS == "darwin" {
         cmd = exec.Command("node", "index.js")
     }
-    cmd.Stdout = os.Stdout
-    cmd.Stderr = os.Stderr
+    f, err := os.OpenFile("./APIlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+    if err != nil {
+        fmt.Printf("error opening file: %v", err)
+    }
+    defer f.Close()
+    // On this line you're going to redirect the output to a file
+    cmd.Stdout = f
     cmd.Start()
 }
 
@@ -216,45 +224,51 @@ func nginx() {
 }
 
 var PIDFile = "./.daemonize.pid"
-func stopall() {
+func stop() {
     if _, err := os.Stat(PIDFile); err == nil {
-         data, err := ioutil.ReadFile(PIDFile)
-         if err != nil {
-                 fmt.Println("Not running")
-                 os.Exit(1)
+        data, err := ioutil.ReadFile(PIDFile)
+        if err != nil {
+            log.Fatal("Not running")
+            os.Exit(1)
+        }
+        ProcessID, err := strconv.Atoi(string(data))
 
-         ProcessID, err := strconv.Atoi(string(data))
+        if err != nil {
+            log.Fatal("Unable to read and parse process id found in ", PIDFile)
+            os.Exit(1)
+        }
+        process, err := os.FindProcess(ProcessID)
+        log.Printf(string(ProcessID))
+        if err != nil {
+            log.Fatal("Unable to find process ID [%v] with error %v \n", ProcessID, err)
+            os.Exit(1)
+        }
+        // remove PID file
+        os.Remove(PIDFile)
 
-         if err != nil {
-                 fmt.Println("Unable to read and parse process id found in ", PIDFile)
-                 os.Exit(1)
-         }
-
-         process, err := os.FindProcess(ProcessID)
-
-         if err != nil {
-                 fmt.Printf("Unable to find process ID [%v] with error %v \n", ProcessID, err)
-                 os.Exit(1)
-         }
-         // remove PID file
-         os.Remove(PIDFile)
-
-         fmt.Printf("Killing process ID [%v] now.\n", ProcessID)
-         // kill process and exit immediately
-         err = process.Kill()
-
-         if err != nil {
-                 fmt.Printf("Unable to kill process ID [%v] with error %v \n", ProcessID, err)
-                 os.Exit(1)
-         } else {
-                 fmt.Printf("Killed process ID [%v]\n", ProcessID)
-                 os.Exit(0)
-         }
+        log.Printf("Killing process ID [%v] now.\n", ProcessID)
+        // kill process and exit immediately
+        err = process.Kill()
+        if err != nil {
+            log.Fatal("Unable to kill process ID [%v] with error %v \n", ProcessID, err)
+            os.Exit(1)
+        } else {
+            log.Printf("Killed process ID [%v]\n", ProcessID)
+            os.Exit(0)
+        }
+    }
 }
 
-}
-}
 
-func RunApi() {
+func main(){
+    lf, err := os.OpenFile("./APIlogfile", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+    if err != nil {
+        log.Fatalf("error opening file: %v", err)
+    }
+    defer lf.Close()
+    log.SetOutput(lf)
     tonseapi()
+}
+func RunApi() {
+    main()
 }

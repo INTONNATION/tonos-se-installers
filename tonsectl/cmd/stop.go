@@ -2,7 +2,11 @@ package cmd
 
 import (
     "github.com/spf13/cobra"
-     "net/http"
+    "io/ioutil"
+    "log"
+    "os"
+    "strconv"
+    "syscall"
 )
 
 func init() {
@@ -19,9 +23,36 @@ var stopCmd = &cobra.Command{
 }
 
 func stop() {
-        resp, err := http.Head("http://localhost:10000/tonse/stop")
+    if _, err := os.Stat(PIDFile); err == nil {
+        data, err := ioutil.ReadFile(PIDFile)
         if err != nil {
-    	// handle err
+            log.Fatal("Not running")
+            os.Exit(1)
         }
-        defer resp.Body.Close()
+        ProcessID, err := strconv.Atoi(string(data))
+
+        if err != nil {
+            log.Fatal("Unable to read and parse process id found in ", PIDFile)
+            os.Exit(1)
+        }
+        if err != nil {
+            log.Fatal("Unable to find process ID [%v] with error %v \n", ProcessID, err)
+            os.Exit(1)
+        }
+        // remove PID file
+        os.Remove(PIDFile)
+
+        log.Printf("Killing process ID [%v] now.\n", ProcessID)
+        // kill process and exit immediately
+        //err = process.Kill()
+        err =syscall.Kill(-ProcessID, syscall.SIGKILL)
+        if err != nil {
+            log.Fatal("Unable to kill process ID [%v] with error %v \n", ProcessID, err)
+            os.Exit(1)
+        } else {
+            log.Printf("Killed process ID [%v]\n", ProcessID)
+            os.Exit(0)
+        }
     }
+}
+
