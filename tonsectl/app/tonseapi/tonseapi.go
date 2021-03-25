@@ -13,6 +13,7 @@ import (
     "os"
     "os/exec"
     "os/user"
+    "path"
     "runtime"
     "strconv"
     "syscall"
@@ -42,9 +43,6 @@ func tonseapi() {
     log.Fatal(http.ListenAndServe(":10000", myRouter))
 }
 
-func tonseInit(w http.ResponseWriter, r *http.Request){
-    fmt.Println("Endpoint Hit: tonseInit")
-}
 
 func tonseStart(w http.ResponseWriter, r *http.Request){
     arangodStart()
@@ -65,6 +63,7 @@ func tonseStatus(w http.ResponseWriter, r *http.Request){
 }
 
 func tonseReset(w http.ResponseWriter, r *http.Request){
+    reset_dir()
     fmt.Println("Endpoint Hit: tonseReset")
 }
 
@@ -259,7 +258,15 @@ func stop() {
     }
 }
 
-
+func reset_dir()  {
+    dir, err := ioutil.ReadDir(tonossePath)
+    if err != nil {
+     fmt.Print("Cant find TONSE dir")
+    }
+    for _, d := range dir {
+        os.RemoveAll(path.Join([]string{"tmp", d.Name()}...))
+    }
+}
 func main(){
     lf, err := os.OpenFile("./APIlogfile", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
     if err != nil {
