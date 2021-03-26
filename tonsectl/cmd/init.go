@@ -5,12 +5,14 @@ import (
     "github.com/spf13/cobra"
     "fmt"
     "os"
+    "os/user"
     "strings"
     "os/exec"
     "log"
     "strconv"
     "syscall"
     "time"
+
 )
 
 func init() {
@@ -34,7 +36,10 @@ var apiCmd = &cobra.Command{
     },
 }
 
-var PIDFile = "./.daemonize.pid"
+var usr, e = user.Current()
+var tonossePath = usr.HomeDir + "/tonse/"
+
+var PIDFile = tonossePath+".daemonize.pid"
 
  func savePID(pid int) {
 
