@@ -4,6 +4,7 @@ import (
     "fmt"
     "github.com/gorilla/mux"
     "github.com/joho/godotenv"
+    "github.com/mitchellh/go-ps"
     "io/ioutil"
     "log"
     "net/http"
@@ -21,7 +22,7 @@ var usr, e = user.Current()
 var tonossePath = usr.HomeDir + "/tonse/"
 
 var pid = 0
-
+var PIDFile = tonossePath+".daemonize.pid"
 
 
 func tonseapi() {
@@ -49,6 +50,7 @@ func tonseStop(w http.ResponseWriter, r *http.Request){
 }
 
 func tonseStatus(w http.ResponseWriter, r *http.Request){
+    status()
     fmt.Println("Endpoint Hit: tonseStatus")
 }
 
@@ -63,6 +65,7 @@ func node() {
     cmd.Stdout = os.Stdout
     cmd.Stderr = os.Stderr
     cmd.Start()
+    cmd.Wait()
 }
 
 
@@ -95,6 +98,7 @@ func arangodStart(){
 	dump.Stdout = os.Stdout
 	dump.Stderr = os.Stderr
 	dump.Run()
+    dump.Wait()
 }
 
 
@@ -113,6 +117,7 @@ func graphql() {
     // On this line you're going to redirect the output to a file
     cmd.Stdout = f
     cmd.Start()
+    cmd.Wait()
 }
 
 func nginx() {
@@ -122,41 +127,46 @@ func nginx() {
     cmd.Start()
 }
 
-var PIDFile = "./.daemonize.pid"
+
+
 func stop() {
-    if _, err := os.Stat(PIDFile); err == nil {
-        data, err := ioutil.ReadFile(PIDFile)
-        if err != nil {
-            log.Fatal("Not running")
-            os.Exit(1)
-        }
-        ProcessID, err := strconv.Atoi(string(data))
-
-        if err != nil {
-            log.Fatal("Unable to read and parse process id found in ", PIDFile)
-            os.Exit(1)
-        }
-        process, err := os.FindProcess(ProcessID)
-        log.Printf(string(ProcessID))
-        if err != nil {
-            log.Fatal("Unable to find process ID [%v] with error %v \n", ProcessID, err)
-            os.Exit(1)
-        }
-        // remove PID file
-        os.Remove(PIDFile)
-
-        log.Printf("Killing process ID [%v] now.\n", ProcessID)
-        // kill process and exit immediately
-        err = process.Kill()
-        if err != nil {
-            log.Fatal("Unable to kill process ID [%v] with error %v \n", ProcessID, err)
-            os.Exit(1)
-        } else {
-            log.Printf("Killed process ID [%v]\n", ProcessID)
-            os.Exit(0)
+    data, err := ioutil.ReadFile(PIDFile)
+    if err != nil {
+        log.Fatal("Not running")
+        os.Exit(1)
+    }
+    list, err := ps.Processes()
+    if err != nil {
+        panic(err)
+    }
+    ProcessID, err := strconv.Atoi(string(data))
+    for _, p := range list {
+        if p.PPid() == ProcessID {
+            process, _ := os.FindProcess(p.Pid())
+            log.Printf("Process %s with PID %d and PPID %d", p.Executable(), p.Pid(), p.PPid())
+            process.Kill()
         }
     }
 }
+
+func status() {
+    data, err := ioutil.ReadFile(PIDFile)
+    if err != nil {
+        log.Fatal("Not running")
+        os.Exit(1)
+    }
+    list, err := ps.Processes()
+    if err != nil {
+        panic(err)
+    }
+    ProcessID, err := strconv.Atoi(string(data))
+    for _, p := range list {
+        if p.PPid() == ProcessID {
+            log.Printf("Process %s with PID %d and PPID %d", p.Executable(), p.Pid(), p.PPid())
+        }
+    }
+}
+
 
 func reset_dir()  {
     dir, err := ioutil.ReadDir(tonossePath)
