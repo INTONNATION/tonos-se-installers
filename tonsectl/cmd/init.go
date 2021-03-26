@@ -10,6 +10,7 @@ import (
     "log"
     "strconv"
     "syscall"
+    "time"
 )
 
 func init() {
@@ -65,6 +66,7 @@ func api() {
            cmd.Start()
            fmt.Println("Daemon process ID is : ", cmd.Process.Pid)
            savePID(cmd.Process.Pid)
+           time.Sleep(time.Second * 5)
            os.Exit(0)
 }
 }
