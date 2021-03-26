@@ -43,6 +43,7 @@ func start() {
     resp, err := http.Head("http://localhost:10000/tonse/start")
     if err != nil {
         fmt.Printf("Start failed")
+    } else {
+        defer resp.Body.Close()
     }
-    defer resp.Body.Close()
 }

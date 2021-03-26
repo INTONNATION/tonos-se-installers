@@ -12,9 +12,9 @@ tonossePath="$HOME/tonse"
 # Download tonosse and extract TON node and Graph binaries
 
 cd $tonossePath
-curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-$tonosse_version/tonos-se-v-$tonosse_version.tgz
-tar xf tonos-se-v-$tonosse_version.tgz
-rm tonos-se-v-$tonosse_version.tgz
+curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-$tonosse_version/tonos-se-v-$tonosse_version-linux.tgz
+tar xf tonos-se-v-$tonosse_version-linux.tgz
+rm tonos-se-v-$tonosse_version-linux.tgz
 
 # Arango DB
 curl -O https://download.arangodb.com/arangodb37/Community/Linux/arangodb3-linux-$arango_version.tar.gz
@@ -60,14 +60,15 @@ echo $qserver
 rm -rf $tonossePath/graphql/$qserver
 mv $tonossePath/$qserver $tonossePath/graphql/
 PATH=$PATH:$tonossePath/graphql/nodejs/bin/
-sudo mkdir /usr/lib/node_modules -p
-sudo chown -R $USER /usr/lib/node_modules
-./nodejs/bin/npm install $qserver --production
+#sudo mkdir /usr/lib/node_modules -p
+#sudo chown -R $USER /usr/lib/node_modules
 tar xf $tonossePath/graphql/$qserver
 rm -rf $tonossePath/graphql/$qserver 
+cd $tonossePath/graphql/package
+npm install --production
 
 # Nginx
 
 # Need to add more Linux distributives
-apt -y install nginx
-curl -o /etc/nginx/nginx.conf https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf
+sudo apt -y install nginx
+sudo curl -o /etc/nginx/nginx.conf https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf

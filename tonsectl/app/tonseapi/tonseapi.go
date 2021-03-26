@@ -105,6 +105,12 @@ func graphql() {
     if runtime.GOOS == "darwin" {
         cmd = exec.Command("node", "index.js")
     }
+    if runtime.GOOS == "linux" {
+        cmd = exec.Command("node", "index.js")
+    }
+    if runtime.GOOS == "windows" {
+        cmd = exec.Command("node", "index.js")
+    }
     f, err := os.OpenFile("./APIlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
     if err != nil {
         fmt.Printf("error opening file: %v", err)
