@@ -1,0 +1,22 @@
+2021/03/24 19:18:03 cmd.Run() failed with exec: "./nodejs/node": file does not exist
+2021/03/25 12:11:43 Just ran subprocess 8308, exiting
+2021/03/25 12:12:46 Just ran subprocess 16324, exiting
+2021/03/25 12:22:35 Just ran subprocess 8284, exiting
+2021/03/25 12:38:32 Just ran subprocess 11964, exiting
+2021/03/25 12:42:32 Just ran subprocess 5388, exiting
+2021/03/25 12:52:28 Just ran subprocess 17616, exiting
+2021/03/25 12:53:53 Just ran subprocess 15288, exiting
+2021/03/25 12:58:29 Just ran subprocess 864, exiting
+2021/03/25 12:59:12 Just ran subprocess 12468, exiting
+2021/03/25 15:06:10 Just ran subprocess 7988, exiting
+2021/03/25 15:10:57 Just ran subprocess 1880, exiting
+2021/03/25 17:49:35 Just ran subprocess 6604, exiting
+2021/03/25 18:04:13 Just ran subprocess 280, exiting
+2021/03/25 21:15:21 Just ran subprocess 16564, exiting
+2021/03/26 22:46:21 Just ran subprocess 796, exiting
+2021/03/26 22:46:22 cmd.Run() failed with exec: "ton_node_startup": executable file not found in %PATH%
+2021/03/27 01:36:01 Just ran subprocess 20604, exiting
+2021/03/27 13:14:03 Just ran subprocess 2256, exiting
+2021/03/27 13:16:19 Just ran subprocess 5444, exiting
+2021/03/27 13:20:55 Just ran subprocess 20624, exiting
+2021/03/27 13:26:31 Just ran subprocess 11040, exiting
