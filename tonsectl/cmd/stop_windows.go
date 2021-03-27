@@ -1,4 +1,4 @@
-// +build linux darwin
+// +build windows
 
 package cmd
 
@@ -45,7 +45,8 @@ func stop() {
         os.Remove(PIDFile)
 
         log.Printf("Killing process ID [%v] now.\n", ProcessID)
-        err = syscall.Kill(-ProcessID, syscall.SIGTERM)
+	    process, err := os.FindProcess(-ProcessID)
+            process.Signal(syscall.SIGTERM)
         if err != nil {
             log.Fatal("Unable to kill process ID [%v] with error %v \n", ProcessID, err)
             os.Exit(1)

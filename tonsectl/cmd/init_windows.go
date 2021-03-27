@@ -1,20 +1,19 @@
-// +build linux darwin
+// +build windows
 
 package cmd
 
 import (
+    "fmt"
     "github.com/INTONNATION/tonos-se-installers/tonsectl/app/tonseapi"
     "github.com/spf13/cobra"
-    "fmt"
-    "os"
-    "os/user"
-    "strings"
-    "os/exec"
     "log"
+    "os"
+    "os/exec"
+    "os/user"
     "strconv"
-    "time"
+    "strings"
     "syscall"
-    "runtime"
+    "time"
 )
 
 func init() {
@@ -69,11 +68,8 @@ var PIDFile = tonossePath+".daemonize.pid"
 func api() {
        if strings.ToLower(os.Args[1]) == "init" {
            cmd := exec.Command(os.Args[0], "api")
-           if runtime.GOOS == "linux"{
-                cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
-           }
-           if runtime.GOOS == "darwin" {
-                cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+           cmd.SysProcAttr = &syscall.SysProcAttr{
+               CreationFlags: syscall.CREATE_NEW_PROCESS_GROUP,
            }
            cmd.Start()
            fmt.Println("Daemon process ID is : ", cmd.Process.Pid)
