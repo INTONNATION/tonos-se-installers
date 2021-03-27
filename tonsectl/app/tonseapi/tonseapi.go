@@ -57,7 +57,6 @@ func tonseStatus(w http.ResponseWriter, r *http.Request){
 
     }
     respond.With(w, r, http.StatusOK, data)
-    status()
     fmt.Println("Endpoint Hit: tonseStatus")
 }
 
