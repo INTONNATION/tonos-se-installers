@@ -15,6 +15,7 @@ import (
     "runtime"
     "strconv"
     "time"
+    "gopkg.in/matryer/respond.v1"
 )
 
 
@@ -23,7 +24,6 @@ var tonossePath = usr.HomeDir + "/tonse/"
 
 var pid = 0
 var PIDFile = tonossePath+".daemonize.pid"
-
 
 func tonseapi() {
     myRouter := mux.NewRouter().StrictSlash(true)
@@ -34,28 +34,36 @@ func tonseapi() {
     log.Fatal(http.ListenAndServe(":10000", myRouter))
 }
 
-
 func tonseStart(w http.ResponseWriter, r *http.Request){
     arangodStart()
     node()
     graphql()
     nginx()
+    respond.With(w, r, http.StatusOK, "TON OS SE is running")
     fmt.Println("Endpoint Hit: tonseStart")
 }
 
 func tonseStop(w http.ResponseWriter, r *http.Request){
-    log.Println("Endpoint Hit:1")
     stop()
+    respond.With(w, r, http.StatusOK, "TON OS SE is stoped")
     log.Println("Endpoint Hit: tonseStop")
 }
 
 func tonseStatus(w http.ResponseWriter, r *http.Request){
+    data, err := status()
+    if err != nil {
+	respond.With(w, r, http.StatusInternalServerError, err)
+	return
+
+    }
+    respond.With(w, r, http.StatusOK, data)
     status()
     fmt.Println("Endpoint Hit: tonseStatus")
 }
 
 func tonseReset(w http.ResponseWriter, r *http.Request){
     reset_dir()
+    respond.With(w, r, http.StatusOK, "All blockchain data was deleted")
     fmt.Println("Endpoint Hit: tonseReset")
 }
 

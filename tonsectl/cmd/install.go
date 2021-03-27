@@ -8,8 +8,6 @@ import (
 	"os/exec"
 	"strings"
 	"runtime"
-        "reflect"
-
 )
 
 func init() {
@@ -38,7 +36,6 @@ func install() {
         if runtime.GOOS == "windows" {
 	    data, _ = f.ReadFile("init-scripts/init.windows.bat")
         }
-        fmt.Println(reflect.TypeOf(data)) 
 	cmd := exec.Command("/bin/bash")
 	cmd.Stdin = strings.NewReader(string(data))
 	//fmt.Printf("Running in background init script")
