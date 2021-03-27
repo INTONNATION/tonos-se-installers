@@ -45,7 +45,9 @@ func stop() {
         log.Printf("Killing process ID [%v] now.\n", ProcessID)
         // kill process and exit immediately
         //err = process.Kill()
-        err =syscall.Kill(-ProcessID, syscall.SIGKILL)
+	process, err := os.FindProcess(-ProcessID)
+        process.Signal(syscall.SIGTERM)
+        //err = syscall.Kill(-ProcessID, syscall.SIGTERM)
         if err != nil {
             log.Fatal("Unable to kill process ID [%v] with error %v \n", ProcessID, err)
             os.Exit(1)

@@ -27,7 +27,6 @@ type StatusResponse struct {
 var usr, e = user.Current()
 var tonossePath = usr.HomeDir + "/tonse/"
 
-var pid = 0
 var PIDFile = tonossePath+".daemonize.pid"
 
 func tonseapi() {
@@ -71,12 +70,15 @@ func node() {
     cmd := exec.Command("./ton_node_startup", "--config", "cfg")
     cmd.Stdout = os.Stdout
     cmd.Stderr = os.Stderr
+    err := cmd.Start()
+    if err != nil {
+        log.Fatalf("cmd.Run() failed with %s\n", err)
+    }
     cmd.Start()
 }
 
-
 func arangodStart(){
-        os.Chdir(tonossePath+"/arangodb/bin")
+        os.Chdir(tonossePath+"/arangodb/usr/bin")
 	upgrade := exec.Command("./arangod", "--config", tonossePath + "/arangodb/etc/config", "--server.endpoint", "tcp://127.0.0.1:8529", "--server.authentication=false", "--log.foreground-tty", "true", "--database.auto-upgrade", "true")
         upgrade.Stdout = os.Stdout
 	upgrade.Stderr = os.Stderr
@@ -89,7 +91,6 @@ func arangodStart(){
         cmd.Stderr = os.Stderr
 	cmd.Start()
 	log.Printf("Just ran subprocess %d, exiting\n", cmd.Process.Pid)
-	pid = cmd.Process.Pid
 	for {
 	    status := exec.Command("./arangosh", "--server.endpoint=127.0.0.1", "--server.authentication=false", "--javascript.execute-string", "'db._version()'")
 	    status.Stdout = os.Stdout
@@ -118,11 +119,11 @@ func graphql() {
         cmd = exec.Command("node", "index.js")
     }
     if runtime.GOOS == "windows" {
-        cmd = exec.Command("node", "index.js")
+        cmd = exec.Command("../nodejs/node", "index.js")
     }
     f, err := os.OpenFile("./APIlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
     if err != nil {
-        fmt.Printf("error opening file: %v", err)
+	fmt.Printf("error opening file: %v", err)
     }
     defer f.Close()
     // On this line you're going to redirect the output to a file
@@ -131,13 +132,20 @@ func graphql() {
 }
 
 func nginx() {
-    cmd := exec.Command("nginx -g 'daemon on; master_process on;'")
+    if runtime.GOOS == "darwin" {
+        cmd := exec.Command("nginx -g 'daemon on; master_process on;'")
+    }
+    if runtime.GOOS == "linux" {
+        cmd := exec.Command("nginx -g 'daemon on; master_process on;'")
+    }
+    if runtime.GOOS == "windows" {
+        os.Chdir(tonossePath+"/nginx")
+        cmd := exec.Command("./nginx", "-g", "daemon on; master_process on;")
+    }
     cmd.Stdout = os.Stdout
     cmd.Stderr = os.Stderr
     cmd.Start()
 }
-
-
 
 func stop() {
     data, err := ioutil.ReadFile(PIDFile)
