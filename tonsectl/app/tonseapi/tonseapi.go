@@ -65,7 +65,6 @@ func node() {
     cmd.Stdout = os.Stdout
     cmd.Stderr = os.Stderr
     cmd.Start()
-    cmd.Wait()
 }
 
 
@@ -98,7 +97,6 @@ func arangodStart(){
 	dump.Stdout = os.Stdout
 	dump.Stderr = os.Stderr
 	dump.Run()
-    dump.Wait()
 }
 
 
@@ -123,7 +121,6 @@ func graphql() {
     // On this line you're going to redirect the output to a file
     cmd.Stdout = f
     cmd.Start()
-    cmd.Wait()
 }
 
 func nginx() {
