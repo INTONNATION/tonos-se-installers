@@ -16,6 +16,7 @@ import (
     "strconv"
     "time"
     "gopkg.in/matryer/respond.v1"
+//    "reflect"
 )
 
 type StatusResponse struct {
@@ -109,7 +110,7 @@ func arangodStart(){
 func graphql() {
     os.Chdir(tonossePath+"/graphql/package")
     godotenv.Load()
-    cmd := exec.Command("ls")
+    var cmd *exec.Cmd
     if runtime.GOOS == "darwin" {
         cmd = exec.Command("node", "index.js")
     }
