@@ -15,14 +15,19 @@ import (
     "runtime"
     "strconv"
     "time"
+    "gopkg.in/matryer/respond.v1"
+//    "reflect"
 )
 
+type StatusResponse struct {
+    Name       string
+    PID        string
+}
 
 var usr, e = user.Current()
 var tonossePath = usr.HomeDir + "/tonse/"
 
 var PIDFile = tonossePath+".daemonize.pid"
-
 
 func tonseapi() {
     myRouter := mux.NewRouter().StrictSlash(true)
@@ -33,28 +38,30 @@ func tonseapi() {
     log.Fatal(http.ListenAndServe(":10000", myRouter))
 }
 
-
 func tonseStart(w http.ResponseWriter, r *http.Request){
     arangodStart()
     node()
     graphql()
     nginx()
+    respond.With(w, r, http.StatusOK, "TON OS SE is running")
     fmt.Println("Endpoint Hit: tonseStart")
 }
 
 func tonseStop(w http.ResponseWriter, r *http.Request){
-    log.Println("Endpoint Hit:1")
     stop()
+    respond.With(w, r, http.StatusOK, "TON OS SE is stoped")
     log.Println("Endpoint Hit: tonseStop")
 }
 
 func tonseStatus(w http.ResponseWriter, r *http.Request){
-    status()
+    data := status()
+    respond.With(w, r, http.StatusOK, data)
     fmt.Println("Endpoint Hit: tonseStatus")
 }
 
 func tonseReset(w http.ResponseWriter, r *http.Request){
     reset_dir()
+    respond.With(w, r, http.StatusOK, "All blockchain data was deleted")
     fmt.Println("Endpoint Hit: tonseReset")
 }
 
@@ -67,7 +74,7 @@ func node() {
     if err != nil {
         log.Fatalf("cmd.Run() failed with %s\n", err)
     }
-    cmd.Wait()
+    cmd.Start()
 }
 
 func arangodStart(){
@@ -98,14 +105,13 @@ func arangodStart(){
 	dump.Stdout = os.Stdout
 	dump.Stderr = os.Stderr
 	dump.Run()
-    dump.Wait()
 }
 
 
 func graphql() {
     os.Chdir(tonossePath+"/graphql/package")
     godotenv.Load()
-    cmd := exec.Command(tonossePath+"/graphql/nodejs/bin/node", "index.js")
+    var cmd *exec.Cmd
     if runtime.GOOS == "darwin" {
         cmd = exec.Command("node", "index.js")
     }
@@ -123,7 +129,6 @@ func graphql() {
     // On this line you're going to redirect the output to a file
     cmd.Stdout = f
     cmd.Start()
-    cmd.Wait()
 }
 
 func nginx() {
@@ -162,8 +167,10 @@ func stop() {
     }
 }
 
-func status() {
+
+func status() []StatusResponse {
     data, err := ioutil.ReadFile(PIDFile)
+    var ResponseSlice []StatusResponse
     if err != nil {
         log.Fatal("Not running")
         os.Exit(1)
@@ -176,10 +183,13 @@ func status() {
     for _, p := range list {
         if p.PPid() == ProcessID {
             log.Printf("Process %s with PID %d and PPID %d", p.Executable(), p.Pid(), p.PPid())
+            pid := strconv.Itoa(p.Pid())
+            ResponseSlice = append(ResponseSlice, StatusResponse{p.Executable(), pid})
         }
     }
+    log.Printf("%+v\n", ResponseSlice)
+    return ResponseSlice
 }
-
 
 func reset_dir()  {
     dir, err := ioutil.ReadDir(tonossePath)
