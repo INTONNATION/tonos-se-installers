@@ -138,7 +138,7 @@ func graphql() {
 func nginx() {
     var cmd *exec.Cmd
     if runtime.GOOS == "darwin" {
-        cmd = exec.Command("nginx -g 'daemon on; master_process on;'")
+        cmd = exec.Command("/bin/bash", "-c","/usr/local/bin/nginx -g 'daemon off;'")
     }
     if runtime.GOOS == "linux" {
         cmd = exec.Command("nginx -g 'daemon on; master_process on;'")
@@ -147,8 +147,13 @@ func nginx() {
         os.Chdir(tonossePath+"/nginx")
         cmd = exec.Command("./nginx", "-g", "daemon on; master_process on;")
     }
-    cmd.Stdout = os.Stdout
-    cmd.Stderr = os.Stderr
+    f, err := os.OpenFile("./APIlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+    if err != nil {
+        fmt.Printf("error opening file: %v", err)
+    }
+    defer f.Close()
+    // On this line you're going to redirect the output to a file
+    cmd.Stdout = f
     cmd.Start()
 }
 

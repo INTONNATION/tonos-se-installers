@@ -14,6 +14,7 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 brew install nginx
 mkdir -p $tonossePath/nginx
 curl https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf -o $tonossePath/nginx/nginx.conf
+cp $tonossePath/nginx/nginx.conf /usr/local/etc/nginx/nginx.conf
 
 # Download tonosse and extract TON node and Graph binaries
 
