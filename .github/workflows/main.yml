@@ -18,9 +18,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Clone GraphQL
-      run: |
-        git clone --recursive --branch $Q_SERVER_GITHUB_REV $Q_SERVER_GITHUB_REPO ton-q-server
 
     - name: Build tonsectl
       run: |
@@ -30,6 +27,12 @@ jobs:
         cd tonsectl 
         GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-X github.com/INTONNATION/tonos-se-installers/tonsectl/cmd/version.appVersion=${TONSECTL_VERSION}" -o "./artifacts/tonsectl_linux" main.go
         GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-X github.com/INTONNATION/tonos-se-installers/tonsectl/cmd/version.appVersion=${TONSECTL_VERSION}" -o "./artifacts/tonsectl_darwin" main.go
+        GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-X github.com/INTONNATION/tonos-se-installers/tonsectl/cmd/version.appVersion=${TONSECTL_VERSION}" -o "./artifacts/tonsectl_windows.exe" main.go
+
+    - name: Clone GraphQL
+      run: |
+        git clone --recursive --branch $Q_SERVER_GITHUB_REV $Q_SERVER_GITHUB_REPO ton-q-server
+        cp tonsectl/graphql/.env ton-q-server/
 
     - name: Package GraphQL npm 
       shell: bash
@@ -105,9 +108,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Clone GraphQL
       run: |
         git clone --recursive --branch $Q_SERVER_GITHUB_REV $Q_SERVER_GITHUB_REPO ton-q-server
+        cp tonsectl/graphql/.env ton-q-server/
 
     - name: Package GraphQL npm 
       shell: bash

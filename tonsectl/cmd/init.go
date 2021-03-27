@@ -11,7 +11,8 @@ import (
     "log"
     "strconv"
     "time"
-    //"syscall"
+    "syscall"
+    "runtime"
 )
 
 func init() {
@@ -66,11 +67,16 @@ var PIDFile = tonossePath+".daemonize.pid"
 func api() {
        if strings.ToLower(os.Args[1]) == "init" {
            cmd := exec.Command(os.Args[0], "api")
-           //cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+           if runtime.GOOS == "linux"{
+                cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+           }
+           if runtime.GOOS == "darwin" {
+                cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+           }
            cmd.Start()
            fmt.Println("Daemon process ID is : ", cmd.Process.Pid)
            savePID(cmd.Process.Pid)
            time.Sleep(time.Second * 5)
            os.Exit(0)
-}
+       }
 }

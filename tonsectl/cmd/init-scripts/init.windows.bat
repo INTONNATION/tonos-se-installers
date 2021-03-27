@@ -67,7 +67,6 @@ rmdir /Q /S %tonossePath%\tonos-se-v-%tonosse_version%-windows
 set PATH=%PATH%;%tonossePath%\graphql\nodejs
 
 tar xf %qserver%
-curl https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/graphql/.env -o %tonossePath%\graphql\package\.env
 
 npm install %qserver% --production
 del /Q /S %qserver%

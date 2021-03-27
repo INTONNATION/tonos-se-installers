@@ -78,7 +78,11 @@ func node() {
 }
 
 func arangodStart(){
-        os.Chdir(tonossePath+"/arangodb/usr/bin")
+        if runtime.GOOS == "windows" {
+            os.Chdir(tonossePath+"/arangodb/usr/bin")
+        } else {
+            os.Chdir(tonossePath+"/arangodb/bin")
+        }
 	upgrade := exec.Command("./arangod", "--config", tonossePath + "/arangodb/etc/config", "--server.endpoint", "tcp://127.0.0.1:8529", "--server.authentication=false", "--log.foreground-tty", "true", "--database.auto-upgrade", "true")
         upgrade.Stdout = os.Stdout
 	upgrade.Stderr = os.Stderr
@@ -132,15 +136,16 @@ func graphql() {
 }
 
 func nginx() {
+    var cmd *exec.Cmd
     if runtime.GOOS == "darwin" {
-        cmd := exec.Command("nginx -g 'daemon on; master_process on;'")
+        cmd = exec.Command("nginx -g 'daemon on; master_process on;'")
     }
     if runtime.GOOS == "linux" {
-        cmd := exec.Command("nginx -g 'daemon on; master_process on;'")
+        cmd = exec.Command("nginx -g 'daemon on; master_process on;'")
     }
     if runtime.GOOS == "windows" {
         os.Chdir(tonossePath+"/nginx")
-        cmd := exec.Command("./nginx", "-g", "daemon on; master_process on;")
+        cmd = exec.Command("./nginx", "-g", "daemon on; master_process on;")
     }
     cmd.Stdout = os.Stdout
     cmd.Stderr = os.Stderr
