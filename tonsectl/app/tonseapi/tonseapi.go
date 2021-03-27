@@ -88,7 +88,7 @@ func arangodStart(){
 	    status := exec.Command("./arangosh", "--server.endpoint=127.0.0.1", "--server.authentication=false", "--javascript.execute-string", "'db._version()'")
 	    status.Stdout = os.Stdout
 	    status.Stderr = os.Stderr
-	    err := status.Start()
+	    err := status.Run()
 	    time.Sleep(1 * time.Second)
 	    if err == nil {
 	        break
@@ -117,7 +117,7 @@ func graphql() {
     }
     f, err := os.OpenFile("./APIlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
     if err != nil {
-        log.Fatalf("cmd.Run() failed with %s\n", err)
+	fmt.Printf("error opening file: %v", err)
     }
     defer f.Close()
     // On this line you're going to redirect the output to a file
