@@ -7,13 +7,20 @@ arango_version="3.7.9"
 mkdir -p ~/tonse
 tonossePath="$HOME/tonse"
 
+# Nginx
+
+# Need to add more Linux distributives
+export HOMEBREW_NO_AUTO_UPDATE=1
+brew install nginx
+mkdir -p $tonossePath/nginx
+curl https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf -o $tonossePath/nginx/nginx.conf
+
 # Download tonosse and extract TON node and Graph binaries
 
 cd $tonossePath
-curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-$tonosse_version/tonos-se-v-$tonosse_version.tgz
-mv tonos-se-v-$tonosse_version.tgz tonos-se-v-$tonosse_version.tar
-tar xf tonos-se-v-$tonosse_version.tar
-rm tonos-se-v-$tonosse_version.tar
+curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-$tonosse_version/tonos-se-v-$tonosse_version-darwin.tar
+tar xf tonos-se-v-$tonosse_version-darwin.tar
+rm tonos-se-v-$tonosse_version-darwin.tar
 
 # Arango DB
 curl -O https://download.arangodb.com/arangodb37/Community/MacOSX/arangodb3-macos-$arango_version.tar.gz
@@ -54,10 +61,3 @@ npm config set registry="http://registry.npmjs.org"
 npm install $qserver --production
 tar xf $tonossePath/graphql/$qserver
 rm -rf $tonossePath/graphql/$qserver
-
-
-# Nginx
-
-# Need to add more Linux distributives
-brew install nginx
-curl -o /etc/nginx/nginx.conf https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf
