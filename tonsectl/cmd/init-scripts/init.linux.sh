@@ -9,6 +9,14 @@ set -e
 mkdir -p ~/tonse
 tonossePath="$HOME/tonse"
 
+# Nginx
+
+# Need to add more Linux distributives
+sudo apt -y install nginx
+mkdir $tonossePath/nginx -p
+cd $tonossePath/nginx
+curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf
+
 # Download tonosse and extract TON node and Graph binaries
 
 cd $tonossePath
@@ -66,9 +74,3 @@ tar xf $tonossePath/graphql/$qserver
 rm -rf $tonossePath/graphql/$qserver 
 cd $tonossePath/graphql/package
 npm install --production
-
-# Nginx
-
-# Need to add more Linux distributives
-sudo apt -y install nginx
-sudo curl -o /etc/nginx/nginx.conf https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf
