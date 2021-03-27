@@ -8,7 +8,7 @@ import (
     "log"
     "os"
     "strconv"
-    "syscall"
+    "os/exec"
 )
 
 func init() {
@@ -45,8 +45,8 @@ func stop() {
         os.Remove(PIDFile)
 
         log.Printf("Killing process ID [%v] now.\n", ProcessID)
-	    process, err := os.FindProcess(-ProcessID)
-            process.Signal(syscall.SIGTERM)
+        kill := exec.Command("taskkill", "/T", "/F", "/PID", strconv.Itoa(ProcessID))
+        err = kill.Run()
         if err != nil {
             log.Fatal("Unable to kill process ID [%v] with error %v \n", ProcessID, err)
             os.Exit(1)
