@@ -95,11 +95,15 @@ Linux
 
         curl -LJ -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_linux
 
-2. Install required dependencies:
+2. Make tonsectl executable:
+
+       chmod +x tonsectl
+
+3. Install required dependencies:
 
        ./tonsectl install
 
-3. Start TON OS SE:
+4. Start TON OS SE:
 
        ./tonsectl start
 
@@ -112,11 +116,15 @@ OSX
 
         curl -LJ -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_darwin
 
-2. Install required dependencies:
+2. Make tonsectl executable:
+
+       chmod +x tonsectl
+
+3. Install required dependencies:
 
         ./tonsectl install
 
-3. Start TON OS SE:
+4. Start TON OS SE:
 
        ./tonsectl start
 
