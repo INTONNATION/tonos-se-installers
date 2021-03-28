@@ -47,7 +47,7 @@ That’s why our team developed a cross platform solution which was verified on 
 
 ## Project description
 
-	Based on contest goals we choose the following architecture and tools:
+Based on contest goals we choose the following architecture and tools:
 
 
 
@@ -162,9 +162,9 @@ Details - [https://docs.ton.dev/86757ecb2/p/8080e6-tonos-cli](https://docs.ton.d
 ### SDK
 
      TonClient.defaultConfig = {
-     network: {
-       endpoints: ['http://localhost]
-               },
+       network: {
+        endpoints: ['http://localhost]
+       },
      };
 
 Details - [https://docs.ton.dev/86757ecb2/p/5328db-configure-sdk/b/18573c](https://docs.ton.dev/86757ecb2/p/5328db-configure-sdk/b/18573c) 
