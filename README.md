@@ -43,6 +43,60 @@ That’s why our team developed a cross platform solution which was verified on 
   </tr>
 </table>
 
+## Quick start
+
+### Windows
+
+1. Open CMD
+2. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
+
+       curl -o tonsectl.exe https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_windows.exe
+
+3. Install required dependencies:
+
+       tonsectl.exe install
+
+4. Start TON OS SE:
+
+       tonsectl.exe start
+
+### Linux
+
+1. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
+
+        curl -LJ -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_linux
+
+2. Make tonsectl executable:
+
+       chmod +x tonsectl
+
+3. Install required dependencies:
+
+       ./tonsectl install
+
+4. Start TON OS SE:
+
+       ./tonsectl start
+
+### OSX
+
+
+1. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
+
+        curl -LJ -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_darwin
+
+2. Make tonsectl executable:
+
+       chmod +x tonsectl
+
+3. Install required dependencies:
+
+        ./tonsectl install
+
+4. Start TON OS SE:
+
+       ./tonsectl start
+
 
 
 ## Project description
@@ -69,68 +123,6 @@ Some of them like _start_, _status_, _stop_ and _reset_ just utilize an API deve
 ## Prerequirements
 
 TON Q-SERVER which is used in TON OS SE requires Git installed and available in PATH.
-
-## Quick start
-
-Windows
-
-
-
-1. Open CMD
-2. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
-
-       curl -o tonsectl.exe https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_windows.exe
-
-3. Install required dependencies:
-
-       tonsectl.exe install
-
-4. Start TON OS SE:
-
-       tonsectl.exe start
-
-
-Linux
-
-
-
-1. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
-
-        curl -LJ -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_linux
-
-2. Make tonsectl executable:
-
-       chmod +x tonsectl
-
-3. Install required dependencies:
-
-       ./tonsectl install
-
-4. Start TON OS SE:
-
-       ./tonsectl start
-
-
-OSX
-
-
-
-1. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
-
-        curl -LJ -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_darwin
-
-2. Make tonsectl executable:
-
-       chmod +x tonsectl
-
-3. Install required dependencies:
-
-        ./tonsectl install
-
-4. Start TON OS SE:
-
-       ./tonsectl start
-
 
 
 ## Verification
