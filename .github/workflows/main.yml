@@ -15,6 +15,8 @@ jobs:
       TONSECTL_VERSION: v0.0.1
       Q_SERVER_GITHUB_REPO: https://github.com/tonlabs/ton-q-server
       Q_SERVER_GITHUB_REV: master
+      TONOSSE_GITHUB_REV: 0.25.0
+      TONOSSE_GITHUB_REPO: https://github.com/tonlabs/tonos-se
 
     steps:
     - uses: actions/checkout@v2
@@ -41,13 +43,15 @@ jobs:
 
     - name: Build TON node 
       run: |
+        git clone --recursive --branch $TONOSSE_GITHUB_REV $TONOSSE_GITHUB_REPO tonos-se
+        cd tonos-se
         sudo apt update -y && sudo apt install -y cmake pkg-config libssl-dev curl
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
         cd ton-node-se && cargo build --release
 
     - name: Archive GraphQL npm and TON node bin to common release
       run: |
-        tar --transform 's/.*\///g' -cvzf tonos-se-linux.tar.gz ./ton-node-se/target/release/ton_node_startup ${{ steps.graphql_release.outputs.release_tar }}
+        tar --transform 's/.*\///g' -cvzf tonos-se-linux.tar.gz ./tonos-se/ton-node-se/target/release/ton_node_startup ${{ steps.graphql_release.outputs.release_tar }}
 
     - name: Extract branch name
       shell: bash
@@ -105,6 +109,8 @@ jobs:
     env:
       Q_SERVER_GITHUB_REPO: https://github.com/tonlabs/ton-q-server
       Q_SERVER_GITHUB_REV: master
+      TONOSSE_GITHUB_REV: 0.25.0
+      TONOSSE_GITHUB_REPO: https://github.com/tonlabs/tonos-se
 
     steps:
     - uses: actions/checkout@v2
@@ -121,13 +127,15 @@ jobs:
 
     - name: Build TON node 
       run: |
+        git clone --recursive --branch $TONOSSE_GITHUB_REV $TONOSSE_GITHUB_REPO tonos-se
+        cd tonos-se
         brew install cmake pkg-config curl
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
         cd ton-node-se && cargo build --release --target x86_64-apple-darwin
 
     - name: Archive GraphQL npm and TON node bin to common release
       run: |
-        cp ./ton-node-se/target/x86_64-apple-darwin/release/ton_node_startup ./ton_node_startup
+        cp ./tonos-se/ton-node-se/target/x86_64-apple-darwin/release/ton_node_startup ./ton_node_startup
         tar -cf tonos-se-darwin.tar ./ton_node_startup ${{ steps.graphql_release.outputs.release_tar }}
 
     - name: Extract branch name
