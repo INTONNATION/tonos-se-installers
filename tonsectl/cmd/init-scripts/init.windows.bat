@@ -21,7 +21,7 @@ DEL /Q tonos-se-v-%tonosse_version%-windows.tar
 curl -O https://download.arangodb.com/arangodb37/Community/Windows/ArangoDB3-%arango_version%_win64.zip
 tar xf ArangoDB3-%arango_version%_win64.zip
 DEL /Q ArangoDB3-%arango_version%_win64.zip
-move -y ArangoDB3-%arango_version%_win64 %tonossePath%\arangodb
+move ArangoDB3-%arango_version%_win64 %tonossePath%\arangodb
 mkdir %tonossePath%\arangodb\etc
 mkdir %tonossePath%\arangodb\var\lib\arangodb3
 mkdir %tonossePath%\arangodb\initdb.d
@@ -38,14 +38,14 @@ curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-nod
 curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/private-key
 curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/pub-key
 
-move -y %tonossePath%\tonos-se-v-%tonosse_version%-windows\ton_node_startup.exe %tonossePath%\node\ton_node_startup.exe
+move %tonossePath%\tonos-se-v-%tonosse_version%-windows\ton_node_startup.exe %tonossePath%\node\ton_node_startup.exe
 
 :::: Nginx
 
 curl -O http://nginx.org/download/nginx-%nginx_version%.zip
 tar xf nginx-%nginx_version%.zip
 del /Q /S nginx-%nginx_version%.zip
-move -y nginx-%nginx_version% %tonossePath%\nginx
+move nginx-%nginx_version% %tonossePath%\nginx
 curl -o %tonossePath%\nginx\conf\nginx.conf https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf
 
 :: Graph QL
@@ -55,9 +55,9 @@ cd %tonossePath%\graphql
 curl -O https://nodejs.org/dist/v%nodejs_version%/node-v%nodejs_version%-win-x64.zip
 tar xf node-v%nodejs_version%-win-x64.zip
 del /Q node-v%nodejs_version%-win-x64.zip
-move -y node-v%nodejs_version%-win-x64 nodejs
+move node-v%nodejs_version%-win-x64 nodejs
 
-move -y %tonossePath%\tonos-se-v-%tonosse_version%-windows\%qserver% %tonossePath%\graphql\
+move %tonossePath%\tonos-se-v-%tonosse_version%-windows\%qserver% %tonossePath%\graphql\
 
 del /S /Q %tonossePath%\tonos-se-v-%tonosse_version%-windows
 rmdir /Q /S %tonossePath%\tonos-se-v-%tonosse_version%-windows
