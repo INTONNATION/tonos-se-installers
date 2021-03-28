@@ -43,10 +43,10 @@ curl https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/arango/ini
 mkdir -p $tonossePath/node
 cd $tonossePath/node
 
-curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/docker/ton-node/cfg
-curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/docker/ton-node/log_cfg.yml
-curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/docker/ton-node/private-key
-curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/docker/ton-node/pub-key
+curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/cfg
+curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/log_cfg.yml
+curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/private-key
+curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/pub-key
 
 rm $tonossePath/node/ton_node_startup -f
 mv $tonossePath/ton_node_startup $tonossePath/node/
