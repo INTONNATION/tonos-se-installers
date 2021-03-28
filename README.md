@@ -93,7 +93,7 @@ Linux
 
 1. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
 
-        curl -o  tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_linux
+        curl -LJ -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_linux
 
 2. Install required dependencies:
 
@@ -110,7 +110,7 @@ OSX
 
 1. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
 
-        curl -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_darwin
+        curl -LJ -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_darwin
 
 2. Install required dependencies:
 
