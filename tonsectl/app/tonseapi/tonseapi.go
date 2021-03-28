@@ -120,7 +120,7 @@ func graphql() {
         cmd = exec.Command("node", "index.js")
     }
     if runtime.GOOS == "linux" {
-        cmd = exec.Command("node", "index.js")
+        cmd = exec.Command("../nodejs/bin/node", "index.js")
     }
     if runtime.GOOS == "windows" {
         cmd = exec.Command("../nodejs/node", "index.js")

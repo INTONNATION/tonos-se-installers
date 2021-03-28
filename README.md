@@ -66,6 +66,9 @@ In our case Cobra is used in each tonsectl command. Commands are described in co
 
 Some of them like _start_, _status_, _stop_ and _reset_ just utilize an API developed under [app/tonseapi/tonseapi.go](https://github.com/INTONNATION/tonos-se-installers/tree/master/tonsectl/app/tonseapi). _init_ command manages an API itself. _install_ - runs init scripts dependent on a GO runtime e.g. Operating System. _start_ will also trigger _init_ first to spin up an API in case it’s not running.
 
+## Prerequirements
+
+TON Q-SERVER which is used in TON OS SE requires Git installed and available in PATH.
 
 ## Quick start
 
@@ -93,13 +96,17 @@ Linux
 
 1. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
 
-        curl -o  tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_linux
+        curl -LJ -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_linux
 
-2. Install required dependencies:
+2. Make tonsectl executable:
+
+       chmod +x tonsectl
+
+3. Install required dependencies:
 
        ./tonsectl install
 
-3. Start TON OS SE:
+4. Start TON OS SE:
 
        ./tonsectl start
 
@@ -110,13 +117,17 @@ OSX
 
 1. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
 
-        curl -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_darwin
+        curl -LJ -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_darwin
 
-2. Install required dependencies:
+2. Make tonsectl executable:
+
+       chmod +x tonsectl
+
+3. Install required dependencies:
 
         ./tonsectl install
 
-3. Start TON OS SE:
+4. Start TON OS SE:
 
        ./tonsectl start
 
@@ -323,16 +334,17 @@ Linux:
 
 
 
-*   verify tonsectl on other Linux distributions
-*   move Nginx logic to an app to not depend on Linux package manager 
-*   avoid sudo usage (required for Nginx installation)
+*   move Nginx logic to an app to not depend on Linux package manager !!!
+*   avoid sudo usage (required for Nginx installation, will be fixed by previous one)
 *   generate configs from templates
 *   Rewrite init scripts to use GO
+*   verify tonsectl on other Linux distributions
 
 OSX:
 
 
 
-*   avoid sudo usage (required for Nginx installation)
+*   move Nginx logic to an app to not depend on Linux package manager !!!
+*   avoid sudo usage (required for Nginx installation, will be fixed by previous one)
 *   generate configs from templates
 *   Rewrite init scripts to use GO

@@ -11,9 +11,13 @@ tonossePath="$HOME/tonse"
 
 # Nginx
 
+# TO DO | rewrite on go web-server
 # Need to add more Linux distributives
 sudo apt -y install nginx
 sudo setcap cap_net_bind_service=ep /usr/sbin/nginx
+sudo service nginx stop
+sudo systemctl disable nginx
+sudo chmod -R 777 /var/log/nginx/
 sudo curl -o /usr/share/nginx/nginx.conf https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf
 
 # Download tonosse and extract TON node and Graph binaries
