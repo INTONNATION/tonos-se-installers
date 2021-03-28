@@ -10,9 +10,6 @@ SET qserver=ton-q-server-%qserver_version%.tgz
 
 :: Release downloading
 
-del /Q /S  %tonossePath%
-rmdir /Q /S %tonossePath%
-
 mkdir "%tonossePath%"
 cd %tonossePath%
 curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-%tonosse_version%/tonos-se-v-%tonosse_version%-windows.tar
