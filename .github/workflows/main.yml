@@ -105,6 +105,17 @@ jobs:
         asset_name: tonsectl_darwin
         asset_content_type: application/x-executable
 
+    - name: Upload Release Asset | tonsectl exe Windows
+      id: upload-release-asset-tonsectl-win
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: tonsectl/artifacts/tonsectl_windows.exe
+        asset_name: tonsectl_windows.exe
+        asset_content_type: application/x-executable
+
   build_mac:
 
     runs-on: macos-10.15
