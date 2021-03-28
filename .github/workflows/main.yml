@@ -26,6 +26,9 @@ jobs:
         wget -q https://golang.org/dl/go1.16.2.linux-amd64.tar.gz
         sudo tar -C /usr/local -xzf go1.16.2.linux-amd64.tar.gz
         export PATH=$PATH:/usr/local/go/bin
+        sudo rm /usr/bin/go        
+        which go
+        go version
         cd tonsectl 
         GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-X github.com/INTONNATION/tonos-se-installers/tonsectl/cmd/version.appVersion=${TONSECTL_VERSION}" -o "./artifacts/tonsectl_linux" main.go
         GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-X github.com/INTONNATION/tonos-se-installers/tonsectl/cmd/version.appVersion=${TONSECTL_VERSION}" -o "./artifacts/tonsectl_darwin" main.go
