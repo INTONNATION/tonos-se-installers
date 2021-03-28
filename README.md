@@ -8,7 +8,7 @@
 *   API and CLI for management
 *   automatic builds when new release published
 *   quick and easy to use solution
-*   * compatible with all popular Operating Systems
+*   compatible with all popular Operating Systems
 
 That’s why our team developed a cross platform solution which was verified on Windows 10, Mac  OS Mojave/Catalina, Ubuntu 18.04/20.04.
 
@@ -61,10 +61,10 @@ That’s why our team developed a cross platform solution which was verified on 
 
 ## tonsectl details
 
-	tonsectl utility is based on [Cobra](https://github.com/spf13/cobra) library, which is used in many Go projects such as [Kubernetes](http://kubernetes.io/), [Hugo](https://gohugo.io/) and [Github CLI](https://github.com/cli/cli). [This doc](https://github.com/spf13/cobra/blob/master/projects_using_cobra.md) contains a more extensive list of projects using Cobra.  \
-	In our case Cobra is used in each tonsectl command. Commands are described in correspondent files under [tonsectl/cmd](https://github.com/INTONNATION/tonos-se-installers/tree/master/tonsectl/cmd) directory.
+tonsectl utility is based on [Cobra](https://github.com/spf13/cobra) library, which is used in many Go projects such as [Kubernetes](http://kubernetes.io/), [Hugo](https://gohugo.io/) and [Github CLI](https://github.com/cli/cli). [This doc](https://github.com/spf13/cobra/blob/master/projects_using_cobra.md) contains a more extensive list of projects using Cobra.  \
+In our case Cobra is used in each tonsectl command. Commands are described in correspondent files under [tonsectl/cmd](https://github.com/INTONNATION/tonos-se-installers/tree/master/tonsectl/cmd) directory.
 
-	Some of them like _start_, _status_, _stop_ and _reset_ just utilize an API developed under [app/tonseapi/tonseapi.go](https://github.com/INTONNATION/tonos-se-installers/tree/master/tonsectl/app/tonseapi). _init_ command manages an API itself. _install_ - runs init scripts dependent on a GO runtime e.g. Operating System. _start_ will also trigger _init_ first to spin up an API in case it’s not running.
+Some of them like _start_, _status_, _stop_ and _reset_ just utilize an API developed under [app/tonseapi/tonseapi.go](https://github.com/INTONNATION/tonos-se-installers/tree/master/tonsectl/app/tonseapi). _init_ command manages an API itself. _install_ - runs init scripts dependent on a GO runtime e.g. Operating System. _start_ will also trigger _init_ first to spin up an API in case it’s not running.
 
 
 ## Quick start
@@ -76,15 +76,15 @@ Windows
 1. Open CMD
 2. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
 
-    _curl -o tonsectl.exe https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_windows.exe _
+       curl -o tonsectl.exe https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_windows.exe
 
 3. Install required dependencies:
 
-    _tonsectl.exe install_
+       tonsectl.exe install
 
 4. Start TON OS SE:
 
-    _tonsectl.exe start_
+       tonsectl.exe start
 
 
 Linux
@@ -93,15 +93,15 @@ Linux
 
 1. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
 
-    _curl -o  tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_linux _
+        curl -o  tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_linux
 
 2. Install required dependencies:
 
-    _./tonsectl install_
+       ./tonsectl install
 
 3. Start TON OS SE:
 
-    _./tonsectl start_
+       ./tonsectl start
 
 
 OSX
@@ -110,15 +110,15 @@ OSX
 
 1. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
 
-    _curl -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_darwin _
+        curl -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_darwin
 
 2. Install required dependencies:
 
-    _./tonsectl install_
+        ./tonsectl install
 
 3. Start TON OS SE:
 
-    _./tonsectl start_
+       ./tonsectl start
 
 
 
@@ -127,43 +127,19 @@ OSX
 Navigate to [http://localhost/graphql](http://localhost/graphql) and run the following Graph QL query to verify pre-deployed giver details:
 
 
-    _{_
-
-
-    _  accounts(_
-
-
-    _    filter: {_
-
-
-    _      id: {_
-
-
-    _        eq: "0:b5e9240fc2d2f1ff8cbb1d1dee7fb7cae155e5f6320e585fcc685698994a19a5"_
-
-
-    _      }_
-
-
-    _    }_
-
-
-    _  ) {_
-
-
-    _    id_
-
-
-    _    balance_
-
-
-    _    code_
-
-
-    _  }_
-
-
-    _}_
+    {_
+      accounts(
+        filter: {
+          id: {
+            eq: "0:b5e9240fc2d2f1ff8cbb1d1dee7fb7cae155e5f6320e585fcc685698994a19a5"_
+          }
+        }
+      ) {
+        id
+        balance
+       code
+      }
+    }
 
 **NOTE**: our solution was successfully tested using the following test suites:
 
@@ -178,29 +154,25 @@ Navigate to [http://localhost/graphql](http://localhost/graphql) and run the fol
 
 ### CLI
 
-_tonos-cli config --url [http://localhost](http://localhost)_
+     tonos-cli config --url http://localhost
 
 Details - [https://docs.ton.dev/86757ecb2/p/8080e6-tonos-cli](https://docs.ton.dev/86757ecb2/p/8080e6-tonos-cli) 
 
 
 ### SDK
 
-_TonClient.defaultConfig = {_
-
-_    network: {_
-
-_        endpoints: ['http://localhost]_
-
-_    },_
-
-_};_
+     TonClient.defaultConfig = {
+     network: {
+       endpoints: ['http://localhost]
+               },
+     };
 
 Details - [https://docs.ton.dev/86757ecb2/p/5328db-configure-sdk/b/18573c](https://docs.ton.dev/86757ecb2/p/5328db-configure-sdk/b/18573c) 
 
 
 ## Advanced usage
 
-	The following table will describe all the abilities of tonsectl and API. 
+The following table will describe all the abilities of tonsectl and API. 
 
 
 ## tonsectl
@@ -271,15 +243,15 @@ By default API run on port 10000 and include the following methods:
 
 GET /tonse/start 
 
-_Start TONOS SE components \
+_Start TONOS SE components_ \
  \
-_GET /tonse/stop
+GET /tonse/stop
 
 _Stop TONOS SE components_
 
 GET /tonse/reset
 
-_Delete TONOS SE components data (require _/tonse/stop _executed before)_
+_Delete TONOS SE components data (require /tonse/stop executed before)_
 
 GET /tonse/status
 
