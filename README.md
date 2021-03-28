@@ -50,7 +50,7 @@ That’s why our team developed a cross platform solution which was verified on 
 1. Open CMD
 2. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
 
-       curl -o tonsectl.exe https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_windows.exe
+       curl -LJ -o tonsectl.exe https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_windows.exe
 
 3. Install required dependencies:
 
