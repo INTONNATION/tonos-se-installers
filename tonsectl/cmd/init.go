@@ -32,7 +32,7 @@ var initCmd = &cobra.Command{
 
 var apiCmd = &cobra.Command{
     Use:   "api",
-    Short: "Start TONSE API service",
+    Short: "Start TONSE API without detach(debug mode)",
     Run: func(cmd *cobra.Command, args []string) {
          tonseapi.RunApi()
     },

@@ -7,9 +7,9 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-  Use:   "tonos_installer",
-  Short: "tonos_installer",
-  Long: "tonos_installer log description",
+  Use:   "tonsectl",
+  Short: "TON OS SE installer",
+  Long:  "Cross platform TON OS SE installer",
   Version: "0.0.1",
 }
 

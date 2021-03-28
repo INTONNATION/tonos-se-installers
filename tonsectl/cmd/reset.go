@@ -12,7 +12,7 @@ func init() {
 
 var resetCmd = &cobra.Command{
 	Use:   "reset",
-	Short: "reset directory with local node",
+	Short: "Reset directory with local node",
 	Run: func(cmd *cobra.Command, args []string) {
                 stopReset()
 		reset()
