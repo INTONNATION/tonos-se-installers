@@ -141,11 +141,11 @@ func nginx() {
         cmd = exec.Command("/bin/bash", "-c","/usr/local/bin/nginx -g 'daemon off;'")
     }
     if runtime.GOOS == "linux" {
-        cmd = exec.Command("nginx -g 'daemon on; master_process on;'")
+        cmd = exec.Command("/bin/bash", "-c", "nginx -c ./nginx.conf -g 'pid /tmp/nginx.pid; daemon off;'")
     }
     if runtime.GOOS == "windows" {
         os.Chdir(tonossePath+"/nginx")
-        cmd = exec.Command("./nginx", "-g", "daemon on; master_process on;")
+        cmd = exec.Command("./nginx", "-g", "daemon off;")
     }
     f, err := os.OpenFile("./APIlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
     if err != nil {
@@ -202,14 +202,16 @@ func status() []StatusResponse {
 }
 
 func reset_dir()  {
-    dir, err := ioutil.ReadDir(tonossePath)
+    os.RemoveAll(tonossePath+"/node/workchains")
+    dir, err := ioutil.ReadDir(tonossePath+"/arangodb/var/lib/arangodb3")
     if err != nil {
-     fmt.Print("Cant find TONSE dir")
+     fmt.Print("Cant find TONSE Arango dir")
     }
     for _, d := range dir {
-        os.RemoveAll(path.Join([]string{"tmp", d.Name()}...))
+        os.RemoveAll(path.Join([]string{tonossePath+"/arangodb/var/lib/arangodb3", d.Name()}...))
     }
 }
+
 func main(){
     lf, err := os.OpenFile("./APIlogfile", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
     if err != nil {

@@ -13,9 +13,8 @@ tonossePath="$HOME/tonse"
 
 # Need to add more Linux distributives
 sudo apt -y install nginx
-mkdir $tonossePath/nginx -p
-cd $tonossePath/nginx
-curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf
+sudo setcap cap_net_bind_service=ep /usr/sbin/nginx
+sudo curl -o /usr/share/nginx/nginx.conf https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf
 
 # Download tonosse and extract TON node and Graph binaries
 

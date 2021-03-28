@@ -65,7 +65,6 @@ var PIDFile = tonossePath+".daemonize.pid"
  }
 
 
-
 func api() {
        if strings.ToLower(os.Args[1]) == "init" {
            cmd := exec.Command(os.Args[0], "api")
@@ -76,7 +75,7 @@ func api() {
                 cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
            }
            cmd.Start()
-           fmt.Println("Daemon process ID is : ", cmd.Process.Pid)
+           fmt.Println("Parent process group ID is : ", cmd.Process.Pid)
            savePID(cmd.Process.Pid)
            time.Sleep(time.Second * 5)
            os.Exit(0)

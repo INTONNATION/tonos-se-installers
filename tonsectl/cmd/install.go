@@ -49,7 +49,7 @@ func install() {
 	//defer f.Close()
 	//cmd.Stdout = f
 	//cmd.Stderr = f
-	fmt.Printf("Start installation")
+	fmt.Printf("Start installation\n")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Start()
