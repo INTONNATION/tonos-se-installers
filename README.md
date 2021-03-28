@@ -331,17 +331,17 @@ Linux:
 
 
 
-*   verify tonsectl on other Linux distributions
 *   move Nginx logic to an app to not depend on Linux package manager !!!
-*   avoid sudo usage (required for Nginx installation, fill fix previous one)
+*   avoid sudo usage (required for Nginx installation, will be fixed by previous one)
 *   generate configs from templates
 *   Rewrite init scripts to use GO
+*   verify tonsectl on other Linux distributions
 
 OSX:
 
 
 
 *   move Nginx logic to an app to not depend on Linux package manager !!!
-*   avoid sudo usage (required for Nginx installation)
+*   avoid sudo usage (required for Nginx installation, will be fixed by previous one)
 *   generate configs from templates
 *   Rewrite init scripts to use GO
