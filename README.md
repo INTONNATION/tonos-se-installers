@@ -66,6 +66,9 @@ In our case Cobra is used in each tonsectl command. Commands are described in co
 
 Some of them like _start_, _status_, _stop_ and _reset_ just utilize an API developed under [app/tonseapi/tonseapi.go](https://github.com/INTONNATION/tonos-se-installers/tree/master/tonsectl/app/tonseapi). _init_ command manages an API itself. _install_ - runs init scripts dependent on a GO runtime e.g. Operating System. _start_ will also trigger _init_ first to spin up an API in case it’s not running.
 
+## Prerequirements
+
+TON Q-SERVER which is used in TON OS SE requires Git installed and available in PATH.
 
 ## Quick start
 
