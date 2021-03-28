@@ -127,11 +127,11 @@ OSX
 Navigate to [http://localhost/graphql](http://localhost/graphql) and run the following Graph QL query to verify pre-deployed giver details:
 
 
-    {_
+    {
       accounts(
         filter: {
           id: {
-            eq: "0:b5e9240fc2d2f1ff8cbb1d1dee7fb7cae155e5f6320e585fcc685698994a19a5"_
+            eq: "0:b5e9240fc2d2f1ff8cbb1d1dee7fb7cae155e5f6320e585fcc685698994a19a5"
           }
         }
       ) {
@@ -241,21 +241,23 @@ The following table will describe all the abilities of tonsectl and API.
 
 By default API run on port 10000 and include the following methods:
 
-GET /tonse/start 
-
-_Start TONOS SE components_ \
- \
-GET /tonse/stop
+_Start TONOS SE components_
+     
+    GET /tonse/start 
 
 _Stop TONOS SE components_
-
-GET /tonse/reset
+        
+    GET /tonse/stop
 
 _Delete TONOS SE components data (require /tonse/stop executed before)_
 
-GET /tonse/status
+    GET /tonse/reset
 
 _Return Go Slice [ ] with component PIDs_
+
+    GET /tonse/status
+
+
 
 
 ## TONOS SE components custom configuration:
