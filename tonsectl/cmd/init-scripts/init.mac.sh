@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nodejs_version="v12.21.0"
+nodejs_version="v14.16.0"
 tonosse_version="0.25.0"
 arango_version="3.7.9"
 
@@ -55,7 +55,7 @@ chmod +x $tonossePath/node/ton_node_startup
 mkdir -p $tonossePath/graphql
 cd $tonossePath/graphql
 
-curl "https://nodejs.org/dist//latest-v12.x/node-${nodejs_version:-$(wget -qO- https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
+curl "https://nodejs.org/dist/latest-v14.x/node-${nodejs_version:-$(wget -qO- https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
 qserver=`ls $tonossePath | grep ton-q-server`
 mv $tonossePath/$qserver $tonossePath/graphql/
 npm config set registry="http://registry.npmjs.org"
