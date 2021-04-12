@@ -3,9 +3,9 @@ name: Build Rust node and tools
 on:
   repository_dispatch:
     types: [released]
-#  push:
-#    branches:
-#      - 'tonos-se-v-*'
+  push:
+    branches:
+      - 'tonos-se-v-*'
 
 jobs:
   build_linux:
