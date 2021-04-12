@@ -15,7 +15,7 @@ jobs:
       TONSECTL_VERSION: v0.0.1
       Q_SERVER_GITHUB_REPO: https://github.com/tonlabs/ton-q-server
       Q_SERVER_GITHUB_REV: master
-      TONOSSE_GITHUB_REV: 0.25.0
+      TONOSSE_GITHUB_REV: 0.26.0
       TONOSSE_GITHUB_REPO: https://github.com/tonlabs/tonos-se
 
     steps:
