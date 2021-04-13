@@ -16,7 +16,7 @@ curl -LJ -o caddy.tar.gz https://github.com/caddyserver/caddy/releases/download/
 tar -xvf caddy.tar.gz 
 chmod +x caddy
 rm caddy.tar.gz
-curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/caddy-testing/tonsectl/caddy/Caddyfile
+curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/caddy/Caddyfile
 
 # Download tonosse and extract TON node and Graph binaries
 
