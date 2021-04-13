@@ -42,7 +42,7 @@ func tonseStart(w http.ResponseWriter, r *http.Request){
     arangodStart()
     node()
     graphql()
-    nginx()
+    proxy()
     respond.With(w, r, http.StatusOK, "TON OS SE is running")
     fmt.Println("Endpoint Hit: tonseStart")
 }
@@ -135,13 +135,14 @@ func graphql() {
     cmd.Start()
 }
 
-func nginx() {
+func proxy() {
     var cmd *exec.Cmd
     if runtime.GOOS == "darwin" {
         cmd = exec.Command("/bin/bash", "-c","/usr/local/bin/nginx -g 'daemon off;master_process off;'")
     }
     if runtime.GOOS == "linux" {
-        cmd = exec.Command("/bin/bash", "-c", "nginx -c ./nginx.conf -g 'pid /tmp/nginx.pid; daemon off;master_process off;'")
+	os.Chdir(tonossePath+"/caddy")
+        cmd = exec.Command("./caddy run")
     }
     if runtime.GOOS == "windows" {
         os.Chdir(tonossePath+"/nginx")
