@@ -1,11 +1,18 @@
 name: Build Rust node and tools
 
 on:
-  repository_dispatch:
-    types: [released]
-  push:
-    branches:
-      - 'tonos-se-v-*'
+  workflow_dispatch:
+    inputs:
+      tonosse_version:
+        description: 'TON OS SE version'
+        required: true
+        default: 0.25.0
+
+#  repository_dispatch:
+#    types: [released]
+#  push:
+#    branches:
+#      - 'tonos-se-v-*'
 
 jobs:
   build_linux:
@@ -17,7 +24,7 @@ jobs:
       TONSECTL_VERSION: v0.0.1
       Q_SERVER_GITHUB_REPO: https://github.com/tonlabs/ton-q-server
       Q_SERVER_GITHUB_REV: master
-      TONOSSE_GITHUB_REV: 0.25.0
+      TONOSSE_GITHUB_REV: ${{ github.event.inputs.tonosse_version }}
       TONOSSE_GITHUB_REPO: https://github.com/tonlabs/tonos-se
 
     steps:
