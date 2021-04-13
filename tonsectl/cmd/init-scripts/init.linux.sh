@@ -9,16 +9,17 @@ set -e
 mkdir -p ~/tonse
 tonossePath="$HOME/tonse"
 
-# Nginx
+# Caddy
 
-# TO DO | rewrite on go web-server
-# Need to add more Linux distributives
-sudo apt -y install nginx
-sudo setcap cap_net_bind_service=ep /usr/sbin/nginx
-sudo service nginx stop
-sudo systemctl disable nginx
-sudo chmod -R 777 /var/log/nginx/
-sudo curl -o /usr/share/nginx/nginx.conf https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf
+mkdir -p $tonossePath/caddy
+cd $tonossePath/caddy
+
+curl -s -LJ -o caddy.tar.gz https://github.com/caddyserver/caddy/releases/download/v2.4.0-beta.2/caddy_2.4.0-beta.2_linux_amd64.tar.gz
+tar -zxf caddy.tar.gz 
+chmod +x caddy
+sudo setcap cap_net_bind_service=ep $tonossePath/caddy/caddy
+rm caddy.tar.gz
+curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/caddy/Caddyfile
 
 # Download tonosse and extract TON node and Graph binaries
 

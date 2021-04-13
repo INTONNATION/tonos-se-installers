@@ -1,0 +1,22 @@
+:80
+
+reverse_proxy /graphql {
+    to 127.0.0.1:4000
+    header_up Access-Control-Allow-Methods "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+    header_up Access-Control-Allow-Headers "X-Requested-With, Content-Type, Authorization"
+    header_up Access-Control-Expose-Headers "X-Requested-With, Content-Type, Authorization"
+    header_up Access-Control-Allow-Origin "*"
+    transport http {
+        read_buffer 4096
+    }
+}
+reverse_proxy /topics/requests {
+    to 127.0.0.1:3000
+    header_up Access-Control-Allow-Methods "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+    header_up Access-Control-Allow-Headers "X-Requested-With, Content-Type, Authorization"
+    header_up Access-Control-Expose-Headers "X-Requested-With, Content-Type, Authorization"
+    header_up Access-Control-Allow-Origin "*"
+    transport http {
+        read_buffer 4096
+    }
+}

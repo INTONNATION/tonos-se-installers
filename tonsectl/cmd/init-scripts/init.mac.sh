@@ -7,14 +7,16 @@ arango_version="3.7.9"
 mkdir -p ~/tonse
 tonossePath="$HOME/tonse"
 
-# Nginx
+# Caddy
 
-# Need to add more Linux distributives
-export HOMEBREW_NO_AUTO_UPDATE=1
-brew install nginx
-mkdir -p $tonossePath/nginx
-curl https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf -o $tonossePath/nginx/nginx.conf
-cp $tonossePath/nginx/nginx.conf /usr/local/etc/nginx/nginx.conf
+mkdir -p $tonossePath/caddy
+cd $tonossePath/caddy
+
+curl -LJ -o caddy.tar.gz https://github.com/caddyserver/caddy/releases/download/v2.4.0-beta.2/caddy_2.4.0-beta.2_mac_amd64.tar.gz
+tar -xvf caddy.tar.gz 
+chmod +x caddy
+rm caddy.tar.gz
+curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/caddy/Caddyfile
 
 # Download tonosse and extract TON node and Graph binaries
 
