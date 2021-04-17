@@ -143,7 +143,7 @@ jobs:
 
     - name: Build TON node 
       run: |
-        git clone --recursive --branch ${{ steps.create_release.outputs.upload_url }} $TONOSSE_GITHUB_REPO tonos-se
+        git clone --recursive --branch ${{ github.event.inputs.tonosse_version }} $TONOSSE_GITHUB_REPO tonos-se
         cd tonos-se
         brew install cmake pkg-config curl
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
