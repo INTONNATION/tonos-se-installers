@@ -145,3 +145,59 @@ jobs:
         asset_path: tonos-se-darwin.tar
         asset_name: ${{ steps.extract_branch.outputs.branch }}-darwin.tar
         asset_content_type: application/x-tar
+
+  build_win:
+
+    runs-on: windows-2019
+    needs: build_linux
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Clone GraphQL
+      run: |
+        git clone --recursive --branch master https://github.com/tonlabs/ton-q-server ton-q-server
+        cp tonsectl/graphql/.env ton-q-server/
+
+    - name: Package GraphQL npm 
+      shell: bash
+      run: echo "##[set-output name=release_tar;]$(npm pack ./ton-q-server | tail -1)"
+      id: graphql_release
+
+    - name: Checkout tonlabs/tonos-se 
+      uses: actions/checkout@v2
+      with:
+        repository: 'tonlabs/tonos-se'
+        ref: 'master'
+        
+    - name: Install toolchain 
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        
+    - name: Build ton-node-se 
+      uses: actions-rs/cargo@v1
+      with:
+        command: build
+        args: --release --manifest-path ton-node-se/Cargo.toml
+
+    - name: Archive GraphQL npm and TON node bin to common release
+      run: |
+        find . -name 'ton_node_startup' -exec cp "{}" ./ton_node_startup  \;
+        tar -cf tonos-se-windows.tar ./ton_node_startup ${{ steps.graphql_release.outputs.release_tar }}
+
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
+    - name: Upload Release Asset | node archive
+      id: upload-release-asset-node
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.build_linux.outputs.upload_url }}
+        asset_path: tonos-se-windows.tar
+        asset_name: ${{ steps.extract_branch.outputs.branch }}-windows.tar
+        asset_content_type: application/x-tar
