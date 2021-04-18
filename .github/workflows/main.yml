@@ -183,7 +183,7 @@ jobs:
 
     - name: Archive GraphQL npm and TON node bin to common release
       run: |
-        find . -name 'ton_node_startup' -exec cp "{}" ./ton_node_startup  \;
+        cp ./ton-node-se/target/release/ton_node_startup ./ton_node_startup
         tar -cf tonos-se-windows.tar ./ton_node_startup ${{ steps.graphql_release.outputs.release_tar }}
 
     - name: Extract branch name
