@@ -162,7 +162,7 @@ jobs:
       with:
         upload_url: ${{ needs.build_linux.outputs.upload_url }}
         asset_path: tonos-se-darwin.tar
-        asset_name: ${{ steps.create_release.outputs.upload_url }}-darwin.tar
+        asset_name: ${{ github.event.inputs.tonosse_version }}-darwin.tar
         asset_content_type: application/x-tar
 
   build_win:
@@ -218,5 +218,5 @@ jobs:
       with:
         upload_url: ${{ needs.build_linux.outputs.upload_url }}
         asset_path: tonos-se-windows.tar
-        asset_name: ${{ steps.extract_branch.outputs.branch }}-windows.tar
+        asset_name: ${{ github.event.inputs.tonosse_version }}-windows.tar
         asset_content_type: application/x-tar
