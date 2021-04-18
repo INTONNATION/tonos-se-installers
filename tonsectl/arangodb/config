@@ -5,7 +5,7 @@
 # 
 
 [database]
-directory = @HOME@/tonse/var/lib/arangodb3
+directory = var/lib/arangodb3
 
 [server]
 # Specify the endpoint for HTTP requests by clients.
@@ -46,8 +46,8 @@ statistics = true
 
 
 [javascript]
-startup-directory = @HOME@/tonse/arangodb/usr/share/arangodb3/js
-app-path = @HOME@/tonse/arangodb/var/lib/arangodb3-apps
+startup-directory = usr/share/arangodb3/js
+app-path = var/lib/arangodb3-apps
 # app-path = //arangodb3/apps
 
 # number of V8 contexts available for JavaScript execution. use 0 to 

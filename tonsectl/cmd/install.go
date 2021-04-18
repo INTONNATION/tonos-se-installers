@@ -27,16 +27,19 @@ var f embed.FS
 
 func install() {
         var data []uint8
+		var cmd *exec.Cmd
         if runtime.GOOS == "darwin" {
             data, _ = f.ReadFile("init-scripts/init.mac.sh")
+			cmd = exec.Command("/bin/bash")
         }
         if runtime.GOOS == "linux" {
 	    data, _ = f.ReadFile("init-scripts/init.linux.sh")
+	    cmd = exec.Command("/bin/bash")
         }
         if runtime.GOOS == "windows" {
 	    data, _ = f.ReadFile("init-scripts/init.windows.bat")
+		cmd = exec.Command("C:\\Windows\\System32\\cmd.exe")
         }
-	cmd := exec.Command("/bin/bash")
 	cmd.Stdin = strings.NewReader(string(data))
 	//fmt.Printf("Running in background init script")
 	//f, err := os.OpenFile("./APIlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
@@ -46,7 +49,7 @@ func install() {
 	//defer f.Close()
 	//cmd.Stdout = f
 	//cmd.Stderr = f
-	fmt.Printf("Start installation")
+	fmt.Printf("Start installation\n")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Start()

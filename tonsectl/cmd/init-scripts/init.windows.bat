@@ -5,13 +5,10 @@ SET qserver_version=0.34.1
 SET tonosse_version=0.25.0
 SET arango_version=3.7.10
 SET nginx_version=1.18.0
-SET tonossePath="%HOME%\tonse"
+SET tonossePath=%userprofile%\tonse
 SET qserver=ton-q-server-%qserver_version%.tgz
 
 :: Release downloading
-
-del /Q /S  %tonossePath%
-rmdir /Q /S %tonossePath%
 
 mkdir "%tonossePath%"
 cd %tonossePath%
@@ -35,10 +32,11 @@ curl https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/arango/ini
 
 mkdir %tonossePath%\node
 cd %tonossePath%\node
-curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/docker/ton-node/cfg
-curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/docker/ton-node/log_cfg.yml
-curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/docker/ton-node/private-key
-curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/docker/ton-node/pub-key
+
+curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/cfg
+curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/log_cfg.yml
+curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/private-key
+curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/ton-node/pub-key
 
 move %tonossePath%\tonos-se-v-%tonosse_version%-windows\ton_node_startup.exe %tonossePath%\node\ton_node_startup.exe
 
@@ -67,6 +65,7 @@ rmdir /Q /S %tonossePath%\tonos-se-v-%tonosse_version%-windows
 set PATH=%PATH%;%tonossePath%\graphql\nodejs
 
 tar xf %qserver%
+curl -o %tonossePath%\graphql\package\.env https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/graphql/.env
 
 npm install %qserver% --production
 del /Q /S %qserver%

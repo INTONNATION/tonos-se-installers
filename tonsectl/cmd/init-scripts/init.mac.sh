@@ -1,19 +1,22 @@
 #!/bin/bash
 
-nodejs_version="v12.21.0"
+nodejs_version="v14.16.0"
 tonosse_version="0.25.0"
 arango_version="3.7.9"
 
 mkdir -p ~/tonse
 tonossePath="$HOME/tonse"
 
-# Nginx
+# Caddy
 
-# Need to add more Linux distributives
-export HOMEBREW_NO_AUTO_UPDATE=1
-brew install nginx
-mkdir -p $tonossePath/nginx
-curl https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf -o $tonossePath/nginx/nginx.conf
+mkdir -p $tonossePath/caddy
+cd $tonossePath/caddy
+
+curl -LJ -o caddy.tar.gz https://github.com/caddyserver/caddy/releases/download/v2.4.0-beta.2/caddy_2.4.0-beta.2_mac_amd64.tar.gz
+tar -xvf caddy.tar.gz 
+chmod +x caddy
+rm caddy.tar.gz
+curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/caddy/Caddyfile
 
 # Download tonosse and extract TON node and Graph binaries
 
@@ -54,7 +57,7 @@ chmod +x $tonossePath/node/ton_node_startup
 mkdir -p $tonossePath/graphql
 cd $tonossePath/graphql
 
-curl "https://nodejs.org/dist//latest-v12.x/node-${nodejs_version:-$(wget -qO- https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
+curl "https://nodejs.org/dist/latest-v14.x/node-${nodejs_version:-$(wget -qO- https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
 qserver=`ls $tonossePath | grep ton-q-server`
 mv $tonossePath/$qserver $tonossePath/graphql/
 npm config set registry="http://registry.npmjs.org"
