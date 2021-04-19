@@ -172,6 +172,7 @@ jobs:
     env:
       Q_SERVER_GITHUB_REPO: https://github.com/tonlabs/ton-q-server
       Q_SERVER_GITHUB_REV: master
+      TONOSSE_GITHUB_REPO: https://github.com/tonlabs/tonos-se
       
     steps:
     - uses: actions/checkout@v2
@@ -181,6 +182,7 @@ jobs:
       run: |
         git clone --recursive --branch $Q_SERVER_GITHUB_REV $Q_SERVER_GITHUB_REPO ton-q-server
         cp tonsectl/graphql/.env ton-q-server/
+        git clone --recursive --branch ${{ github.event.inputs.tonosse_version }} $TONOSSE_GITHUB_REPO tonos-se
 
     - name: Package GraphQL npm 
       shell: bash
