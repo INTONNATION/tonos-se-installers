@@ -169,13 +169,17 @@ jobs:
 
     runs-on: windows-2019
     needs: build_linux
-
+    env:
+      Q_SERVER_GITHUB_REPO: https://github.com/tonlabs/ton-q-server
+      Q_SERVER_GITHUB_REV: master
+      
     steps:
     - uses: actions/checkout@v2
 
     - name: Clone GraphQL
+      shell: bash
       run: |
-        git clone --recursive --branch master https://github.com/tonlabs/ton-q-server ton-q-server
+        git clone --recursive --branch $Q_SERVER_GITHUB_REV $Q_SERVER_GITHUB_REPO ton-q-server
         cp tonsectl/graphql/.env ton-q-server/
 
     - name: Package GraphQL npm 
@@ -201,6 +205,7 @@ jobs:
         args: --release --manifest-path ton-node-se/Cargo.toml
 
     - name: Archive GraphQL npm and TON node bin to common release
+      shell: bash
       run: |
         cp ./ton-node-se/target/release/ton_node_startup.exe ./ton_node_startup.exe
         tar -cf tonos-se-windows.tar ./ton_node_startup.exe ${{ steps.graphql_release.outputs.release_tar }}
