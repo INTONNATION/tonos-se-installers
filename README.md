@@ -56,7 +56,7 @@ TON Q-SERVER which is used in TON OS SE requires Git installed and available in 
 1. Open CMD
 2. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
 
-       curl -LJ -o tonsectl.exe https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_windows.exe
+       curl -LJ -o tonsectl.exe https://github.com/INTONNATION/tonos-se-installers/releases/latest/download/tonsectl_windows.exe
 
 3. Install required dependencies:
 
@@ -70,7 +70,7 @@ TON Q-SERVER which is used in TON OS SE requires Git installed and available in 
 
 1. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
 
-        curl -LJ -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_linux
+        curl -LJ -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/latest/download/tonsectl_linux
 
 2. Make tonsectl executable:
 
@@ -89,7 +89,7 @@ TON Q-SERVER which is used in TON OS SE requires Git installed and available in 
 
 1. Download the latest of TON OS SE from our [Github Releases](https://github.com/INTONNATION/tonos-se-installers/releases):
 
-        curl -LJ -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-0.25.0/tonsectl_darwin
+        curl -LJ -o tonsectl https://github.com/INTONNATION/tonos-se-installers/releases/latest/download/tonsectl_darwin
 
 2. Make tonsectl executable:
 
