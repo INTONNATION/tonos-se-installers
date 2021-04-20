@@ -203,7 +203,7 @@ jobs:
     - name: Archive GraphQL npm and TON node bin to common release
       shell: bash
       run: |
-        cp ./ton-node-se/target/release/ton_node_startup.exe ./ton_node_startup.exe
+        cp tonos-se/ton-node-se/target/release/ton_node_startup.exe ./ton_node_startup.exe
         tar -cf tonos-se-windows.tar ./ton_node_startup.exe ${{ steps.graphql_release.outputs.release_tar }}
 
     - name: Extract branch name
