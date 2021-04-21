@@ -1,12 +1,12 @@
 @echo off
 
-SET nodejs_version=14.16.0
-SET qserver_version=0.34.1
-SET tonosse_version=0.25.0
-SET arango_version=3.7.10
+SET nodejs_version=%1
+SET tonosse_version=%2
+SET arango_version=%3
 SET nginx_version=1.18.0
+
 SET tonossePath=%userprofile%\tonse
-SET qserver=ton-q-server-%qserver_version%.tgz
+SET qserver=ton-q-server-*.tgz
 
 :: Release downloading
 

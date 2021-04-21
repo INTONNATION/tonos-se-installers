@@ -1,11 +1,10 @@
 #!/bin/bash
 
-nodejs_version="14.16.0"
-tonosse_version="0.25.0"
-arango_version="3.7.9"
+nodejs_version="$1"
+tonosse_version="$2"
+arango_version="$3"
 
 set -e
-
 mkdir -p ~/tonse
 tonossePath="$HOME/tonse"
 
@@ -24,9 +23,9 @@ curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master
 # Download tonosse and extract TON node and Graph binaries
 
 cd $tonossePath
-curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-$tonosse_version/tonos-se-v-$tonosse_version-linux.tgz
-tar xf tonos-se-v-$tonosse_version-linux.tgz
-rm tonos-se-v-$tonosse_version-linux.tgz
+curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/$tonosse_version/$tonosse_version-linux.tgz
+tar xf $tonosse_version-linux.tgz
+rm $tonosse_version-linux.tgz
 
 # Arango DB
 curl -O https://download.arangodb.com/arangodb37/Community/Linux/arangodb3-linux-$arango_version.tar.gz
@@ -72,8 +71,6 @@ echo $qserver
 rm -rf $tonossePath/graphql/$qserver
 mv $tonossePath/$qserver $tonossePath/graphql/
 PATH=$PATH:$tonossePath/graphql/nodejs/bin/
-#sudo mkdir /usr/lib/node_modules -p
-#sudo chown -R $USER /usr/lib/node_modules
 tar xf $tonossePath/graphql/$qserver
 rm -rf $tonossePath/graphql/$qserver 
 cd $tonossePath/graphql/package
