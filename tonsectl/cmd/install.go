@@ -49,8 +49,8 @@ func install() {
         if runtime.GOOS == "windows" {
 	    data, _ = f.ReadFile("init-scripts/init.windows.bat")
 	    os.WriteFile(tonossePath+"/install.bat", data, 0755)
-	    args := []string{tonossePath+"/install.bat",nodejs_version,tonosse_version,arango_version}
-	    cmd = exec.Command("C:\\Windows\\System32\\cmd.exe", args...)
+	    args := []string{nodejs_version,tonosse_version,arango_version}
+	    cmd = exec.Command(tonossePath+"/install.bat", args...)
         }
 	//fmt.Printf("Running in background init script")
 	//f, err := os.OpenFile("./APIlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
