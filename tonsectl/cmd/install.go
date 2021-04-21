@@ -26,6 +26,7 @@ var f embed.FS
 var nodejs_version string
 var tonosse_version string
 var arango_version string
+var qserver string
 
 func install() {
         var data []uint8
@@ -33,6 +34,7 @@ func install() {
 	fmt.Printf("nodejs_version:" + nodejs_version+"\n")
 	fmt.Printf("tonosse_version:" + tonosse_version+"\n")
 	fmt.Printf("arango_version:" + arango_version+"\n")
+	fmt.Printf("qserver:" + qserver+"\n")
         os.Mkdir(tonossePath,0755)
         if runtime.GOOS == "darwin" {
             data, _ = f.ReadFile("init-scripts/init.mac.sh")
@@ -49,7 +51,7 @@ func install() {
         if runtime.GOOS == "windows" {
 	    data, _ = f.ReadFile("init-scripts/init.windows.bat")
 	    os.WriteFile(tonossePath+"/install.bat", data, 0755)
-	    args := []string{nodejs_version,tonosse_version,arango_version}
+	    args := []string{nodejs_version,tonosse_version,arango_version,qserver}
 	    cmd = exec.Command(tonossePath+"/install.bat", args...)
         }
 	//fmt.Printf("Running in background init script")
