@@ -22,9 +22,9 @@ curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master
 # Download tonosse and extract TON node and Graph binaries
 
 cd $tonossePath
-curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/$tonosse_version/$tonosse_version-linux.tgz
-tar xf $tonosse_version-linux.tgz
-rm $tonosse_version-linux.tgz
+curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/$tonosse_version/tonos-se-linux.tgz
+tar xf tonos-se-linux.tgz
+rm tonos-se-linux.tgz
 
 # Arango DB
 curl -O https://download.arangodb.com/arangodb37/Community/Linux/arangodb3-linux-$arango_version.tar.gz
