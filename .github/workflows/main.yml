@@ -38,9 +38,9 @@ jobs:
         which go
         go version
         cd tonsectl 
-        GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-X github.com/INTONNATION/tonos-se-installers/tonsectl/cmd/version.appVersion=${TONSECTL_VERSION}" -o "./artifacts/tonsectl_linux" main.go
-        GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-X github.com/INTONNATION/tonos-se-installers/tonsectl/cmd/version.appVersion=${TONSECTL_VERSION}" -o "./artifacts/tonsectl_darwin" main.go
-        GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-X github.com/INTONNATION/tonos-se-installers/tonsectl/cmd/version.appVersion=${TONSECTL_VERSION}" -o "./artifacts/tonsectl_windows.exe" main.go
+        GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-X github.com/INTONNATION/tonos-se-installers/tonsectl/cmd/version.appVersion=${TONSECTL_VERSION} -X $(GO_PKG)/cmd.nodejs_version=14.16.0 -X $(GO_PKG)/cmd.tonosse_version=0.26.1 -X $(GO_PKG)/cmd.arango_version=3.7.9" -o "./artifacts/tonsectl_linux" main.go
+        GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-X github.com/INTONNATION/tonos-se-installers/tonsectl/cmd/version.appVersion=${TONSECTL_VERSION} -X $(GO_PKG)/cmd.nodejs_version=14.16.0 -X $(GO_PKG)/cmd.tonosse_version=0.26.1 -X $(GO_PKG)/cmd.arango_version=3.7.9" -o "./artifacts/tonsectl_darwin" main.go
+        GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-X github.com/INTONNATION/tonos-se-installersi/tonsectl/cmd/version.appVersion=${TONSECTL_VERSION} -X $(GO_PKG)/cmd.nodejs_version=14.16.0 -X $(GO_PKG)/cmd.tonosse_version=0.26.1 -X $(GO_PKG)/cmd.arango_version=3.7.9" -o "./artifacts/tonsectl_windows.exe" main.go
 
     - name: Clone GraphQL
       run: |

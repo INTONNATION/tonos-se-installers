@@ -1,8 +1,8 @@
 #!/bin/bash
 
-nodejs_version="v14.16.0"
-tonosse_version="0.25.0"
-arango_version="3.7.9"
+nodejs_version="$1"
+tonosse_version="$2"
+arango_version="$3"
 
 mkdir -p ~/tonse
 tonossePath="$HOME/tonse"
@@ -21,9 +21,9 @@ curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master
 # Download tonosse and extract TON node and Graph binaries
 
 cd $tonossePath
-curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/tonos-se-v-$tonosse_version/tonos-se-v-$tonosse_version-darwin.tar
-tar xf tonos-se-v-$tonosse_version-darwin.tar
-rm tonos-se-v-$tonosse_version-darwin.tar
+curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/$tonosse_version/$tonosse_version-darwin.tar
+tar xf $tonosse_version-darwin.tar
+rm $tonosse_version-darwin.tar
 
 # Arango DB
 curl -O https://download.arangodb.com/arangodb37/Community/MacOSX/arangodb3-macos-$arango_version.tar.gz
