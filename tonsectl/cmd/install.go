@@ -33,7 +33,7 @@ func install() {
 	fmt.Printf("nodejs_version:" + nodejs_version+"\n")
 	fmt.Printf("tonosse_version:" + tonosse_version+"\n")
 	fmt.Printf("arango_version:" + arango_version+"\n")
-
+        os.Mkdir(tonossePath,0755)
         if runtime.GOOS == "darwin" {
             data, _ = f.ReadFile("init-scripts/init.mac.sh")
 	    os.WriteFile(tonossePath+"/install.sh", data, 0755)

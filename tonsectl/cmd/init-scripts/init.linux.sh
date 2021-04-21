@@ -5,7 +5,6 @@ tonosse_version="$2"
 arango_version="$3"
 
 set -e
-mkdir -p ~/tonse
 tonossePath="$HOME/tonse"
 
 # Caddy

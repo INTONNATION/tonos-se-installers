@@ -4,7 +4,6 @@ nodejs_version="$1"
 tonosse_version="$2"
 arango_version="$3"
 
-mkdir -p ~/tonse
 tonossePath="$HOME/tonse"
 
 # Caddy
