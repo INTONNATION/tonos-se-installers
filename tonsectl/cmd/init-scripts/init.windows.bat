@@ -32,7 +32,8 @@ curl https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker
 mkdir %tonossePath%\node
 cd %tonossePath%\node
 
-curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/ton-node/cfg
+curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/$tonosse_version/docker/ton-node/blockchain.conf.json
+curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/$tonosse_version/docker/ton-node/ton-node.conf.json
 curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/ton-node/log_cfg.yml
 curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/ton-node/private-key
 curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/ton-node/pub-key

@@ -67,7 +67,7 @@ func tonseReset(w http.ResponseWriter, r *http.Request){
 
 func node() {
     os.Chdir(tonossePath + "/node")
-    cmd := exec.Command("./ton_node_startup", "--config", "cfg")
+    cmd := exec.Command("./ton_node_startup", "--config", "ton-node.conf.json","--blockchain-config", "blockchain.conf.json")
     cmd.Stdout = os.Stdout
     cmd.Stderr = os.Stderr
     err := cmd.Start()
