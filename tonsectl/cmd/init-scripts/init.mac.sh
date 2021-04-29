@@ -22,6 +22,7 @@ curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master
 cd $tonossePath
 curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/$tonosse_version/tonos-se-darwin.tar
 tar xf tonos-se-darwin.tar
+cp -r web/ $tonossePath/caddy/web/
 rm tonos-se-darwin.tar
 
 # Arango DB

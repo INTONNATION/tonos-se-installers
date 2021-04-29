@@ -1,5 +1,9 @@
 :80
 
+
+root * web/
+file_server
+
 reverse_proxy /graphql {
     to 127.0.0.1:4000
     header_up Access-Control-Allow-Methods "GET, POST, PUT, DELETE, PATCH, OPTIONS"

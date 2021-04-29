@@ -7,12 +7,19 @@ SET qserver=%4
 SET nginx_version=1.18.0
 SET tonossePath=%userprofile%\tonse
 
-:: Release downloading
+:: Caddy
+mkdir %tonossePath%
+mkdir %tonossePath%\caddy
+cd %tonossePath%\caddy
+curl -O https://github.com/caddyserver/caddy/releases/download/v2.4.0-beta.2/caddy_2.4.0-beta.2_windows_amd64.zip
+tar xf caddy_2.4.0-beta.2_windows_amd64.zip
+curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/caddy/Caddyfile
 
-mkdir "%tonossePath%"
+:: Release downloading
 cd %tonossePath%
 curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/%tonosse_version%/tonos-se-windows.tar
 tar xf tonos-se-windows.tar
+move web/ $tonossePath/caddy/web/
 DEL /Q tonos-se-windows.tar
 
 :: ArangoDB
@@ -39,14 +46,6 @@ curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/doc
 curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/ton-node/pub-key
 
 move %tonossePath%\ton_node_startup.exe %tonossePath%\node\ton_node_startup.exe
-
-:::: Nginx
-
-curl -O http://nginx.org/download/nginx-%nginx_version%.zip
-tar xf nginx-%nginx_version%.zip
-del /Q /S nginx-%nginx_version%.zip
-move nginx-%nginx_version% %tonossePath%\nginx
-curl -o %tonossePath%\nginx\conf\nginx.conf https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/nginx/nginx.conf
 
 :: Graph QL
 

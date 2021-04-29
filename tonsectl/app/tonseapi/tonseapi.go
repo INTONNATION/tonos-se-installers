@@ -146,8 +146,8 @@ func proxy() {
         cmd = exec.Command("/bin/bash", "-c", "./caddy run")
     }
     if runtime.GOOS == "windows" {
-        os.Chdir(tonossePath+"/nginx")
-        cmd = exec.Command("./nginx", "-g", "daemon off;master_process off;")
+    os.Chdir(tonossePath+"/caddy")
+        cmd = exec.Command("./caddy", "run")
     }
     f, err := os.OpenFile("./APIlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
     if err != nil {

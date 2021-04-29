@@ -62,7 +62,7 @@ jobs:
 
     - name: Archive GraphQL npm and TON node bin to common release
       run: |
-        tar --transform 's/.*\///g' -cvzf tonos-se-linux.tar.gz ./tonos-se/ton-node-se/target/release/ton_node_startup ${{ steps.graphql_release.outputs.release_tar }}
+        tar --transform 's/.*\///g' -cvzf tonos-se-linux.tar.gz ./tonos-se/ton-node-se/target/release/ton_node_startup ./tonos-se/docker/ton-live/web/ ${{ steps.graphql_release.outputs.release_tar }}
 
     - name: Create Release
       id: create_release
@@ -152,7 +152,7 @@ jobs:
     - name: Archive GraphQL npm and TON node bin to common release
       run: |
         cp ./tonos-se/ton-node-se/target/x86_64-apple-darwin/release/ton_node_startup ./ton_node_startup
-        tar -cf tonos-se-darwin.tar ./ton_node_startup ${{ steps.graphql_release.outputs.release_tar }}
+        tar -cf tonos-se-darwin.tar ./ton_node_startup ./tonos-se/docker/ton-live/web/ ${{ steps.graphql_release.outputs.release_tar }}
 
     - name: Upload Release Asset | node archive
       id: upload-release-asset-node
@@ -204,7 +204,7 @@ jobs:
       shell: bash
       run: |
         cp tonos-se/ton-node-se/target/release/ton_node_startup.exe ./ton_node_startup.exe
-        tar -cf tonos-se-windows.tar ./ton_node_startup.exe ${{ steps.graphql_release.outputs.release_tar }}
+        tar -cf tonos-se-windows.tar ./ton_node_startup.exe ./tonos-se/docker/ton-live/web/ ${{ steps.graphql_release.outputs.release_tar }}
 
     - name: Extract branch name
       shell: bash
