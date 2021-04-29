@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
 	"net/http"
 )
@@ -14,16 +13,16 @@ var resetCmd = &cobra.Command{
 	Use:   "reset",
 	Short: "Reset directory with local node",
 	Run: func(cmd *cobra.Command, args []string) {
-                stopReset()
+		stopReset()
 		reset()
-                startReset()
+		startReset()
 	},
 }
 
 func reset(){
 	resp, err := http.Head("http://localhost:10000/tonse/reset")
 	if err != nil {
-		fmt.Printf("Reset failed")
+		panic(err)
 	}
 	defer resp.Body.Close()
 }
@@ -31,7 +30,7 @@ func reset(){
 func stopReset(){
 	resp, err := http.Head("http://localhost:10000/tonse/stop")
 	if err != nil {
-		fmt.Printf("Stop failed")
+		panic(err)
 	}
 	defer resp.Body.Close()
 }
@@ -39,7 +38,7 @@ func stopReset(){
 func startReset(){
 	resp, err := http.Head("http://localhost:10000/tonse/start")
 	if err != nil {
-		fmt.Printf("Start failed")
+		panic(err)
 	}
 	defer resp.Body.Close()
 }
