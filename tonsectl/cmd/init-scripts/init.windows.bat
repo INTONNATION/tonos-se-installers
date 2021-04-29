@@ -19,7 +19,7 @@ curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master
 cd %tonossePath%
 curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/%tonosse_version%/tonos-se-windows.tar
 tar xf tonos-se-windows.tar
-move web/ $tonossePath/caddy/web/
+move tonos-se/docker/ton-live/web/ $tonossePath/caddy/web/
 DEL /Q tonos-se-windows.tar
 
 :: ArangoDB

@@ -24,7 +24,7 @@ curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master
 cd $tonossePath
 curl -LJO https://github.com/INTONNATION/tonos-se-installers/releases/download/$tonosse_version/tonos-se-linux.tgz
 tar xf tonos-se-linux.tgz
-cp -r web/ $tonossePath/caddy/web/
+cp -r tonos-se/docker/ton-live/web/ $tonossePath/caddy/web/
 rm tonos-se-linux.tgz
 
 # Arango DB

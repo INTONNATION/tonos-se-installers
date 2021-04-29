@@ -62,8 +62,8 @@ jobs:
 
     - name: Archive GraphQL npm and TON node bin to common release
       run: |
-        tar --transform 's/.*\///g' -cvzf tonos-se-linux.tar.gz ./tonos-se/ton-node-se/target/release/ton_node_startup ./tonos-se/docker/ton-live/web/ ${{ steps.graphql_release.outputs.release_tar }}
-
+        cp ./tonos-se/ton-node-se/target/release/ton_node_startup ./ton_node_startup
+        tar -cf tonos-se-linux.tar.gz ./ton_node_startup ./tonos-se/docker/ton-live/web/ ${{ steps.graphql_release.outputs.release_tar }}
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
