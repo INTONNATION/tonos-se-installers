@@ -304,8 +304,6 @@ Details: [https://github.com/tonlabs/ton-q-server#ton-q-server](https://github.c
 
 #### Telegram
 
-
-
 *   @renatSK 
 *   @azavodovskyi 
 *   @sostrovskyi 
@@ -319,26 +317,16 @@ Github - [https://github.com/INTONNATION](https://github.com/INTONNATION)
 
 Windows:
 
-
-
 *   generate configs from templates
 *   Rewrite init scripts to use GO
 
 Linux:
 
-
-
-*   move Nginx logic to an app to not depend on Linux package manager !!!
-*   avoid sudo usage (required for Nginx installation, will be fixed by previous one)
 *   generate configs from templates
 *   Rewrite init scripts to use GO
 *   verify tonsectl on other Linux distributions
 
 OSX:
 
-
-
-*   move Nginx logic to an app to not depend on Linux package manager !!!
-*   avoid sudo usage (required for Nginx installation, will be fixed by previous one)
 *   generate configs from templates
 *   Rewrite init scripts to use GO
