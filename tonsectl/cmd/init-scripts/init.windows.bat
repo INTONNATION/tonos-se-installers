@@ -4,7 +4,6 @@ SET nodejs_version=%1
 SET tonosse_version=%2
 SET arango_version=%3
 SET qserver=%4
-SET nginx_version=1.18.0
 SET tonossePath=%userprofile%\tonse
 
 :: Caddy
