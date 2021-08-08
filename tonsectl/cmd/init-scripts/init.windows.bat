@@ -4,6 +4,7 @@ SET nodejs_version=%1
 SET tonosse_version=%2
 SET arango_version=%3
 SET qserver=%4
+SET port=%5
 SET tonossePath=%userprofile%\tonse
 
 :: Caddy
@@ -13,6 +14,11 @@ cd %tonossePath%\caddy
 curl -s -L -O https://github.com/caddyserver/caddy/releases/download/v2.4.0-beta.2/caddy_2.4.0-beta.2_windows_amd64.zip
 tar xf caddy_2.4.0-beta.2_windows_amd64.zip
 curl -s -L -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/caddy/Caddyfile
+if defined port (
+  ::need to add windows tool instead of sed
+  ::sed -i '' "1 s/^.*$/:$port/" Caddyfile
+
+)
 
 :: Release downloading
 cd %tonossePath%
