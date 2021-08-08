@@ -125,7 +125,7 @@ jobs:
     needs: build_linux
     env:
       Q_SERVER_GITHUB_REPO: https://github.com/tonlabs/ton-q-server
-      Q_SERVER_GITHUB_REV: master
+      Q_SERVER_GITHUB_REV: 0.40.0
       TONOSSE_GITHUB_REPO: https://github.com/tonlabs/tonos-se
 
     steps:
@@ -171,7 +171,7 @@ jobs:
     needs: build_linux
     env:
       Q_SERVER_GITHUB_REPO: https://github.com/tonlabs/ton-q-server
-      Q_SERVER_GITHUB_REV: master
+      Q_SERVER_GITHUB_REV: 0.40.0
       TONOSSE_GITHUB_REPO: https://github.com/tonlabs/tonos-se
       
     steps:
