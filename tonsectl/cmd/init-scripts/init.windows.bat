@@ -15,9 +15,9 @@ curl -s -L -O https://github.com/caddyserver/caddy/releases/download/v2.4.0-beta
 tar xf caddy_2.4.0-beta.2_windows_amd64.zip
 curl -s -L -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/caddy/Caddyfile
 if defined port (
-  ::need to add windows tool instead of sed
-  ::sed -i '' "1 s/^.*$/:$port/" Caddyfile
-
+  curl -s -L https://www.dostips.com/forum/download/file.php?id=604 > JREPL8.6.zip
+  tar xf JREPL8.6.zip
+  call JREPL ":80" ":%port%" /f Caddyfile /o -
 )
 
 :: Release downloading
