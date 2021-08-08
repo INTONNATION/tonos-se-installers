@@ -3,8 +3,14 @@
 nodejs_version="$1"
 tonosse_version="$2"
 arango_version="$3"
+port="$4"
 
 tonossePath="$HOME/tonse"
+
+
+if [ -d "$tonossePath" ]; then
+  rm -r $tonossePath/
+fi
 
 # Caddy
 
@@ -16,6 +22,12 @@ tar -xvf caddy.tar.gz
 chmod +x caddy
 rm caddy.tar.gz
 curl -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/caddy/Caddyfile
+if [ -z ${port+x} ]; then
+  echo "Port value is unset, use default port 80"
+else
+    echo "Port value is set to '$port'"
+    sed -i '' "1 s/^.*$/:$port/" Caddyfile
+fi
 
 # Download tonosse and extract TON node and Graph binaries
 
