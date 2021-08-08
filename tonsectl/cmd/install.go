@@ -17,8 +17,12 @@ var installCmd = &cobra.Command{
 	Use:   "install",
 	Short: "Install all dependencies",
 	Run: func(cmd *cobra.Command, args []string) {
-		install()
-	},
+		if len(args) == 0 {
+			port="80"
+			install(port)
+		}
+        install(args[0])
+		},
 
 }
 //go:embed init-scripts
@@ -27,31 +31,36 @@ var nodejs_version string
 var tonosse_version string
 var arango_version string
 var qserver string
+var port string
 
-func install() {
-        var data []uint8
+
+
+func install(port string) {
+	var data []uint8
 	var cmd *exec.Cmd
+
 	fmt.Printf("nodejs_version:" + nodejs_version+"\n")
 	fmt.Printf("tonosse_version:" + tonosse_version+"\n")
 	fmt.Printf("arango_version:" + arango_version+"\n")
 	fmt.Printf("qserver:" + qserver+"\n")
+	fmt.Printf("port:" + port+"\n")
         os.Mkdir(tonossePath,0755)
         if runtime.GOOS == "darwin" {
             data, _ = f.ReadFile("init-scripts/init.mac.sh")
 	    os.WriteFile(tonossePath+"/install.sh", data, 0755)
-	    args := []string{tonossePath+"/install.sh",nodejs_version,tonosse_version,arango_version}
+	    args := []string{tonossePath+"/install.sh",nodejs_version,tonosse_version,arango_version,port}
             cmd = exec.Command("/bin/bash", args...)
         }
         if runtime.GOOS == "linux" {
 	    data, _ = f.ReadFile("init-scripts/init.linux.sh")
 	    os.WriteFile(tonossePath+"/install.sh", data, 0755)
-	    args := []string{nodejs_version,tonosse_version,arango_version}
+	    args := []string{nodejs_version,tonosse_version,arango_version,port}
 	    cmd = exec.Command(tonossePath+"/install.sh", args...)
         }
         if runtime.GOOS == "windows" {
 	    data, _ = f.ReadFile("init-scripts/init.windows.bat")
 	    os.WriteFile(tonossePath+"/install.bat", data, 0755)
-	    args := []string{nodejs_version,tonosse_version,arango_version,qserver}
+	    args := []string{nodejs_version,tonosse_version,arango_version,qserver,port}
 	    cmd = exec.Command(tonossePath+"/install.bat", args...)
         }
 	//fmt.Printf("Running in background init script")
