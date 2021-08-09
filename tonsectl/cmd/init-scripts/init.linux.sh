@@ -4,7 +4,7 @@ nodejs_version="$1"
 tonosse_version="$2"
 arango_version="$3"
 port="$4"
-dbport="$5"
+db_port="$5"
 
 set -e
 tonossePath="$HOME/tonse"
@@ -12,7 +12,6 @@ tonossePath="$HOME/tonse"
 if [ -d "$tonossePath" ]; then
   rm -r $tonossePath/
 fi
-
 
 # Caddy
 
@@ -54,6 +53,14 @@ mkdir -p $tonossePath/arangodb/var/lib/arangodb3
 mkdir -p $tonossePath/arangodb/initdb.d/
 
 curl https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/arangodb/config -o $tonossePath/arangodb/etc/config
+if [ -z ${db_port+x} ]; then
+  echo "DBPort value is unset, use default port 8529"
+else
+    echo "DBPort value is set to '$db_port'"
+    sed -i "s/tcp:\/\/127.0.0.1:8529/tcp:\/\/127.0.0.1:$db_port/" $tonossePath/arangodb/bin/arangod
+    sed -i "s/tcp:\/\/127.0.0.1:8529/tcp:\/\/127.0.0.1:$db_port/" $tonossePath/arangodb/bin/arangosh
+fi
+
 curl https://raw.githubusercontent.com/tonlabs/tonos-se/master/docker/arango/initdb.d/upgrade-arango-db.js -o $tonossePath/arangodb/initdb.d/upgrade-arango-db.js
 
 # TON node
@@ -63,6 +70,12 @@ cd $tonossePath/node
 
 curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/$tonosse_version/docker/ton-node/blockchain.conf.json
 curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/$tonosse_version/docker/ton-node/ton-node.conf.json
+if [ -z ${db_port+x} ]; then
+  echo "DBPort value is unset, use default port 8529"
+else
+    echo "DBPort value is set to '$db_port'"
+    sed -i "s/127.0.0.1:8529/127.0.0.1:$db_port/" ton-node.conf.json
+fi
 curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/$tonosse_version/docker/ton-node/log_cfg.yml
 curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/$tonosse_version/docker/ton-node/private-key
 curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/$tonosse_version/docker/ton-node/pub-key
@@ -89,4 +102,10 @@ PATH=$PATH:$tonossePath/graphql/nodejs/bin/
 tar xf $tonossePath/graphql/$qserver
 rm -rf $tonossePath/graphql/$qserver 
 cd $tonossePath/graphql/package
+if [ -z ${db_port+x} ]; then
+  echo "DBPort value is unset, use default port 8529"
+else
+    echo "DBPort value is set to '$db_port'"
+    sed -i "s/http:\/\/127.0.0.1:8529/http:\/\/127.0.0.1:$db_port/" .env
+fi
 npm install --production

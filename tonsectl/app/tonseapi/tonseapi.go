@@ -83,20 +83,20 @@ func arangodStart(){
         } else {
             os.Chdir(tonossePath+"/arangodb/bin")
         }
-	upgrade := exec.Command("./arangod", "--config", tonossePath + "/arangodb/etc/config", "--server.endpoint", "tcp://127.0.0.1:8529", "--server.authentication=false", "--log.foreground-tty", "true", "--database.auto-upgrade", "true")
+	upgrade := exec.Command("./arangod", "--config", tonossePath + "/arangodb/etc/config", "--server.authentication=false", "--log.foreground-tty", "true", "--database.auto-upgrade", "true")
         upgrade.Stdout = os.Stdout
 	upgrade.Stderr = os.Stderr
 	err := upgrade.Run()
 	if err != nil {
             log.Fatalf("cmd.Run() failed with %s\n", err)
 	}
-	cmd := exec.Command("./arangod", "--config", tonossePath + "/arangodb/etc/config", "--server.endpoint", "tcp://127.0.0.1:8529", "--server.authentication=false", "--log.foreground-tty", "true")
+	cmd := exec.Command("./arangod", "--config", tonossePath + "/arangodb/etc/config", "--server.authentication=false", "--log.foreground-tty", "true")
         cmd.Stdout = os.Stdout
         cmd.Stderr = os.Stderr
 	cmd.Start()
 	log.Printf("Just ran subprocess %d, exiting\n", cmd.Process.Pid)
 	for {
-	    status := exec.Command("./arangosh", "--server.endpoint=127.0.0.1", "--server.authentication=false", "--javascript.execute-string", "'db._version()'")
+	    status := exec.Command("./arangosh", "--server.authentication=false", "--javascript.execute-string", "'db._version()'")
 	    status.Stdout = os.Stdout
 	    status.Stderr = os.Stderr
 	    err := status.Run()
@@ -105,12 +105,11 @@ func arangodStart(){
 	        break
 	    }
 	}
-	dump := exec.Command("./arangosh", "--server.authentication", "false", "--server.endpoint=tcp://127.0.0.1:8529", "--javascript.execute", tonossePath + "/arangodb/initdb.d/upgrade-arango-db.js")
+	dump := exec.Command("./arangosh", "--server.authentication", "false", "--javascript.execute", tonossePath + "/arangodb/initdb.d/upgrade-arango-db.js")
 	dump.Stdout = os.Stdout
 	dump.Stderr = os.Stderr
 	dump.Run()
 }
-
 
 func graphql() {
     os.Chdir(tonossePath+"/graphql/package")

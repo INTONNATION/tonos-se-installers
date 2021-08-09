@@ -19,9 +19,10 @@ var installCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			port="80"
-			install(port)
+			db_port="8529"
+			install(port,db_port)
 		}
-        install(args[0])
+        install(args[0],args[1])
 		},
 
 }
@@ -32,10 +33,10 @@ var tonosse_version string
 var arango_version string
 var qserver string
 var port string
+var db_port string
 
 
-
-func install(port string) {
+func install(port string, db_port string) {
 	var data []uint8
 	var cmd *exec.Cmd
 
@@ -44,33 +45,26 @@ func install(port string) {
 	fmt.Printf("arango_version:" + arango_version+"\n")
 	fmt.Printf("qserver:" + qserver+"\n")
 	fmt.Printf("port:" + port+"\n")
+        fmt.Printf("dbport:" + db_port+"\n")
         os.Mkdir(tonossePath,0755)
         if runtime.GOOS == "darwin" {
             data, _ = f.ReadFile("init-scripts/init.mac.sh")
 	    os.WriteFile(tonossePath+"/install.sh", data, 0755)
-	    args := []string{tonossePath+"/install.sh",nodejs_version,tonosse_version,arango_version,port}
+	    args := []string{tonossePath+"/install.sh",nodejs_version,tonosse_version,arango_version,port,db_port}
             cmd = exec.Command("/bin/bash", args...)
         }
         if runtime.GOOS == "linux" {
 	    data, _ = f.ReadFile("init-scripts/init.linux.sh")
 	    os.WriteFile(tonossePath+"/install.sh", data, 0755)
-	    args := []string{nodejs_version,tonosse_version,arango_version,port}
+	    args := []string{nodejs_version,tonosse_version,arango_version,port,db_port}
 	    cmd = exec.Command(tonossePath+"/install.sh", args...)
         }
         if runtime.GOOS == "windows" {
 	    data, _ = f.ReadFile("init-scripts/init.windows.bat")
 	    os.WriteFile(tonossePath+"/install.bat", data, 0755)
-	    args := []string{"/c", tonossePath+"/install.bat", nodejs_version,tonosse_version,arango_version,qserver,port}
+	    args := []string{"/c", tonossePath+"/install.bat", nodejs_version,tonosse_version,arango_version,qserver,port,db_port}
 	    cmd = exec.Command("cmd", args...)
         }
-	//fmt.Printf("Running in background init script")
-	//f, err := os.OpenFile("./APIlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	//if err != nil {
-	//	fmt.Printf("error opening file: %v", err)
-	//}
-	//defer f.Close()
-	//cmd.Stdout = f
-	//cmd.Stderr = f
 	fmt.Printf("Start installation\n")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
