@@ -7,6 +7,7 @@ SET qserver=%4
 SET port=%5
 SET tonossePath=%userprofile%\tonse
 
+rmdir /S /Q %tonossePath%
 :: Caddy
 mkdir %tonossePath%
 mkdir %tonossePath%\caddy

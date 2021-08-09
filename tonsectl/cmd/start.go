@@ -37,7 +37,7 @@ func start() {
     data, err := ioutil.ReadFile(PIDFile)
     ProcessID, err := strconv.Atoi(string(data))
     if err != nil {
-       fmt.Printf("Unable to get process ID [%v] with error %v \n", ProcessID, err)
+       fmt.Printf("Service stopped: Unable to get process ID [%v] with error %v \n", ProcessID, err)
        os.Exit(1)
     }
     resp, err := http.Head("http://localhost:10000/tonse/start")
