@@ -71,6 +71,13 @@ curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/$tonosse_version/dock
 curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/$tonosse_version/docker/ton-node/private-key
 curl -O https://raw.githubusercontent.com/tonlabs/tonos-se/$tonosse_version/docker/ton-node/pub-key
 
+if [ -z ${db_port+x} ]; then
+  echo "DBPort value is unset, use default port 8529"
+else
+    echo "DBPort value is set to '$db_port'"
+    sed -i '' "s/127.0.0.1:8529/127.0.0.1:$db_port/" $tonossePath/node/ton-node.conf.json
+fi
+
 mv $tonossePath/ton_node_startup $tonossePath/node/
 chmod +x $tonossePath/node/ton_node_startup
 
@@ -83,12 +90,12 @@ curl -O https://nodejs.org/dist/v$nodejs_version/node-v$nodejs_version.pkg && su
 qserver=`ls $tonossePath | grep ton-q-server`
 mv $tonossePath/$qserver $tonossePath/graphql/
 npm config set registry="http://registry.npmjs.org"
+npm install $qserver --production
+tar xf $tonossePath/graphql/$qserver
 if [ -z ${db_port+x} ]; then
   echo "DBPort value is unset, use default port 8529"
 else
     echo "DBPort value is set to '$db_port'"
-    sed -i '' "s/http:\/\/127.0.0.1:8529/http:\/\/127.0.0.1:$db_port/" .env
+    sed -i '' "s/http:\/\/127.0.0.1:8529/http:\/\/127.0.0.1:$db_port/" $tonossePath/graphql/package/.env
 fi
-npm install $qserver --production
-tar xf $tonossePath/graphql/$qserver
 rm -rf $tonossePath/graphql/$qserver
