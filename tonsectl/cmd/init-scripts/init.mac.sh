@@ -4,7 +4,7 @@ nodejs_version="$1"
 tonosse_version="$2"
 arango_version="$3"
 port="$4"
-dbport="$5"
+db_port="$5"
 
 tonossePath="$HOME/tonse"
 
@@ -50,6 +50,14 @@ mkdir -p $tonossePath/arangodb/var/lib/arangodb3
 mkdir -p $tonossePath/arangodb/initdb.d/
 
 curl https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/arangodb/config -o $tonossePath/arangodb/etc/config
+if [ -z ${db_port+x} ]; then
+  echo "DBPort value is unset, use default port 8529"
+else
+    echo "DBPort value is set to '$db_port'"
+    sed -i '' "s/tcp:\/\/127.0.0.1:8529/tcp:\/\/127.0.0.1:$db_port/" $tonossePath/arangodb/bin/arangod
+    sed -i '' "s/tcp:\/\/127.0.0.1:8529/tcp:\/\/127.0.0.1:$db_port/" $tonossePath/arangodb/bin/arangosh
+fi
+
 curl https://raw.githubusercontent.com/tonlabs/tonos-se/$tonosse_version/docker/arango/initdb.d/upgrade-arango-db.js -o $tonossePath/arangodb/initdb.d/upgrade-arango-db.js
 
 # TON node
@@ -75,6 +83,12 @@ curl -O https://nodejs.org/dist/v$nodejs_version/node-v$nodejs_version.pkg && su
 qserver=`ls $tonossePath | grep ton-q-server`
 mv $tonossePath/$qserver $tonossePath/graphql/
 npm config set registry="http://registry.npmjs.org"
+if [ -z ${db_port+x} ]; then
+  echo "DBPort value is unset, use default port 8529"
+else
+    echo "DBPort value is set to '$db_port'"
+    sed -i '' "s/http:\/\/127.0.0.1:8529/http:\/\/127.0.0.1:$db_port/" .env
+fi
 npm install $qserver --production
 tar xf $tonossePath/graphql/$qserver
 rm -rf $tonossePath/graphql/$qserver

@@ -39,6 +39,12 @@ mkdir %tonossePath%\arangodb\etc
 mkdir %tonossePath%\arangodb\var\lib\arangodb3
 mkdir %tonossePath%\arangodb\initdb.d
 curl -s https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/arangodb/config -o %tonossePath%\arangodb\etc\config
+if defined db_port (
+  curl -s -L https://www.dostips.com/forum/download/file.php?id=604 > JREPL8.6.zip
+  tar xf JREPL8.6.zip
+  call JREPL "tcp://127.0.0.1:8529" ":%db_port%" /f config /o -
+)
+
 curl -s https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/arango/initdb.d/upgrade-arango-db.js -o %tonossePath%\arangodb\initdb.d\upgrade-arango-db.js
 
 :: TON node
@@ -48,6 +54,12 @@ cd %tonossePath%\node
 
 curl -s -O https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/ton-node/blockchain.conf.json
 curl -s -O https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/ton-node/ton-node.conf.json
+if defined db_port (
+  curl -s -L https://www.dostips.com/forum/download/file.php?id=604 > JREPL8.6.zip
+  tar xf JREPL8.6.zip
+  call JREPL "tcp://127.0.0.1:8529" ":%db_port%" /f ton-node.conf.json /o -
+)
+
 curl -s -O https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/ton-node/log_cfg.yml
 curl -s -O https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/ton-node/private-key
 curl -s -O https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/ton-node/pub-key
@@ -69,6 +81,11 @@ set PATH=%PATH%;%tonossePath%\graphql\nodejs
 
 tar xf %qserver%
 curl -s -o %tonossePath%\graphql\package\.env https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/graphql/.env
+if defined db_port (
+  curl -s -L https://www.dostips.com/forum/download/file.php?id=604 > JREPL8.6.zip
+  tar xf JREPL8.6.zip
+  call JREPL "http://127.0.0.1:8529" ":%db_port%" /f .env /o -
+)
 
 npm install %qserver% --production
 del /Q /S %qserver%
