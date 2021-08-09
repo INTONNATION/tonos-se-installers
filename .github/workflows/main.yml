@@ -47,7 +47,7 @@ jobs:
         sudo rm /usr/bin/go        
         which go
         go version
-        echo ${{ steps.graphql_release.outputs.release_tar }}"
+        echo ${{ steps.graphql_release.outputs.release_tar }}
         cd tonsectl 
         GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-X github.com/INTONNATION/tonos-se-installers/tonsectl/cmd/version.appVersion=${TONSECTL_VERSION} -X github.com/INTONNATION/tonos-se-installers/tonsectl/cmd.nodejs_version=14.16.0 -X  github.com/INTONNATION/tonos-se-installers/tonsectl/cmd.tonosse_version=${{ github.event.inputs.tonosse_version }} -X  github.com/INTONNATION/tonos-se-installers/tonsectl/cmd.arango_version=3.7.9 -X  github.com/INTONNATION/tonos-se-installers/tonsectl/cmd.qserver=${{ steps.graphql_release.outputs.release_tar }}" -o "./artifacts/tonsectl_linux" main.go
         GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-X github.com/INTONNATION/tonos-se-installers/tonsectl/cmd/version.appVersion=${TONSECTL_VERSION} -X  github.com/INTONNATION/tonos-se-installers/tonsectl/cmd.nodejs_version=14.16.0 -X  github.com/INTONNATION/tonos-se-installers/tonsectl/cmd.tonosse_version=${{ github.event.inputs.tonosse_version }} -X  github.com/INTONNATION/tonos-se-installers/tonsectl/cmd.arango_version=3.7.9 -X  github.com/INTONNATION/tonos-se-installers/tonsectl/cmd.qserver=${{ steps.graphql_release.outputs.release_tar }}" -o "./artifacts/tonsectl_darwin" main.go
