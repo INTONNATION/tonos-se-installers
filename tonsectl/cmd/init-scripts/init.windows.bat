@@ -1,4 +1,4 @@
-@echo off
+@echo on
 
 SET nodejs_version=%1
 SET tonosse_version=%2
@@ -6,20 +6,19 @@ SET arango_version=%3
 SET qserver=%4
 SET port=%5
 SET tonossePath=%userprofile%\tonse
-SET db_port=%6
+SET dbport=%6
 
-rmdir /S /Q %tonossePath%
 :: Caddy
 mkdir %tonossePath%
 mkdir %tonossePath%\caddy
 cd %tonossePath%\caddy
-curl -s -L -O https://github.com/caddyserver/caddy/releases/download/v2.4.0-beta.2/caddy_2.4.0-beta.2_windows_amd64.zip
+curl -s -LJO https://github.com/caddyserver/caddy/releases/download/v2.4.0-beta.2/caddy_2.4.0-beta.2_windows_amd64.zip
 tar xf caddy_2.4.0-beta.2_windows_amd64.zip
 curl -s -L -O https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/caddy/Caddyfile
 if defined port (
   curl -s -L https://www.dostips.com/forum/download/file.php?id=604 > JREPL8.6.zip
   tar xf JREPL8.6.zip
-  call JREPL ":80" ":%port%" /f Caddyfile /o -
+  start cmd /c JREPL ":80" ":%port%" /f Caddyfile /o -
 )
 
 :: Release downloading
@@ -39,10 +38,11 @@ mkdir %tonossePath%\arangodb\etc
 mkdir %tonossePath%\arangodb\var\lib\arangodb3
 mkdir %tonossePath%\arangodb\initdb.d
 curl -s https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/arangodb/config -o %tonossePath%\arangodb\etc\config
-if defined db_port (
+cd %tonossePath%\arangodb\etc
+if defined dbport (
   curl -s -L https://www.dostips.com/forum/download/file.php?id=604 > JREPL8.6.zip
   tar xf JREPL8.6.zip
-  call JREPL "tcp://127.0.0.1:8529" ":%db_port%" /f config /o -
+  start cmd /c JREPL "endpoint = tcp://127.0.0.1:8529" "endpoint = tcp://127.0.0.1:%dbport%" /f config /o -
 )
 
 curl -s https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/arango/initdb.d/upgrade-arango-db.js -o %tonossePath%\arangodb\initdb.d\upgrade-arango-db.js
@@ -54,10 +54,10 @@ cd %tonossePath%\node
 
 curl -s -O https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/ton-node/blockchain.conf.json
 curl -s -O https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/ton-node/ton-node.conf.json
-if defined db_port (
+if defined dbport (
   curl -s -L https://www.dostips.com/forum/download/file.php?id=604 > JREPL8.6.zip
   tar xf JREPL8.6.zip
-  call JREPL "tcp://127.0.0.1:8529" ":%db_port%" /f ton-node.conf.json /o -
+  start cmd /c JREPL "127.0.0.1:8529" "127.0.0.1:%dbport%" /f ton-node.conf.json /o -
 )
 
 curl -s -O https://raw.githubusercontent.com/tonlabs/tonos-se/%tonosse_version%/docker/ton-node/log_cfg.yml
@@ -80,12 +80,13 @@ move %tonossePath%\%qserver% %tonossePath%\graphql\
 set PATH=%PATH%;%tonossePath%\graphql\nodejs
 
 tar xf %qserver%
+cd %tonossePath%\graphql\package
 curl -s -o %tonossePath%\graphql\package\.env https://raw.githubusercontent.com/INTONNATION/tonos-se-installers/master/tonsectl/graphql/.env
-if defined db_port (
-  curl -s -L https://www.dostips.com/forum/download/file.php?id=604 > JREPL8.6.zip
-  tar xf JREPL8.6.zip
-  call JREPL "http://127.0.0.1:8529" ":%db_port%" /f .env /o -
+if defined dbport (
+ curl -s -L https://www.dostips.com/forum/download/file.php?id=604 > JREPL8.6.zip
+ tar xf JREPL8.6.zip
+ start cmd /c JREPL "http://127.0.0.1:8529" "http://127.0.0.1:%dbport%" /f .env /o -
 )
-
+cd %tonossePath%\graphql
 npm install %qserver% --production
 del /Q /S %qserver%
