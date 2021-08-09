@@ -31,7 +31,7 @@ func status() {
 		}
 		ProcessID, err := strconv.Atoi(string(data))
 		fmt.Printf("SE is running: Process ID: [%v] \n", ProcessID)
-		os.Exit(1)
+		os.Exit(0)
 	}
 	fmt.Print("SE stopped: Unable to find process ID \n")
 }
