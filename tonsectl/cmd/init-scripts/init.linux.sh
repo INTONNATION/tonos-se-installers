@@ -4,6 +4,7 @@ nodejs_version="$1"
 tonosse_version="$2"
 arango_version="$3"
 port="$4"
+dbport="$5"
 
 set -e
 tonossePath="$HOME/tonse"

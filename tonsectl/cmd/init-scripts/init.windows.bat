@@ -6,6 +6,7 @@ SET arango_version=%3
 SET qserver=%4
 SET port=%5
 SET tonossePath=%userprofile%\tonse
+SET db_port=%6
 
 rmdir /S /Q %tonossePath%
 :: Caddy
