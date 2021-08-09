@@ -28,7 +28,7 @@ if [ -z ${port+x} ]; then
   echo "Port value is unset, use default port 80"
 else
     echo "Port value is set to '$port'"
-    sed -i '' "1 s/^.*$/:$port/" Caddyfile
+    sed -i "1 s/^.*$/:$port/" Caddyfile
 fi
 
 
